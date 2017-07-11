@@ -156,7 +156,6 @@ public class RepoListActivity extends AppCompatActivity implements RepoAdapter.O
     @Override
     public void onRepositoryItemClick(GitHubService.RepositoryItem item) {
 
+        DetailRepoActivity.start(this, item.full_name);
     }
-
-
 }
