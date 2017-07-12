@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".NewGitHubRepoApplication"
+        android:name=".model.NewGitHubRepoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,7 +13,7 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".RepoListActivity"
+            android:name=".view.RepositoryListActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <!-- <activity android:name=".NewGitHubRepoApplication"></activity> -->
-        <activity android:name=".DetailRepoActivity"></activity>
+        <activity android:name=".view.DetailRepositoryActivity"></activity>
     </application>
 
 </manifest>

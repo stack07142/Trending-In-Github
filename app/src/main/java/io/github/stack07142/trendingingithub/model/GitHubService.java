@@ -1,4 +1,4 @@
-package io.github.stack07142.trendingingithub;
+package io.github.stack07142.trendingingithub.model;
 
 import java.util.List;
 

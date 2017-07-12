@@ -1,7 +1,8 @@
-package io.github.stack07142.trendingingithub;
+package io.github.stack07142.trendingingithub.model;
 
 import android.app.Application;
 
+import io.github.stack07142.trendingingithub.util.DebugLog;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

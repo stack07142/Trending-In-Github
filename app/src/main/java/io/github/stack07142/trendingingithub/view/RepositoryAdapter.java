@@ -1,4 +1,4 @@
-package io.github.stack07142.trendingingithub;
+package io.github.stack07142.trendingingithub.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,15 +16,18 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.List;
 
-public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder> {
+import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.R;
+
+public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewHolder> {
 
     private final Context context;
     private final OnRepoItemClickListener onRepoItemClickListener;
 
     private List<GitHubService.RepositoryItem> items;
 
-    // RepoAdapter - Constructor
-    public RepoAdapter(Context context, OnRepoItemClickListener onRepoItemClickListener) {
+    // RepositoryAdapter - Constructor
+    public RepositoryAdapter(Context context, OnRepoItemClickListener onRepoItemClickListener) {
 
         this.context = context;
         this.onRepoItemClickListener = onRepoItemClickListener;
