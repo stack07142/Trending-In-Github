@@ -35,7 +35,7 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
     @Override
     public void selectLanguage(String language) {
 
-        loadRepositories();
+        loadRepositories(language);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
     }
 
     // TODO : Refactoring this
-    private void loadRepositories() {
+    private void loadRepositories(String language) {
 
         // 로딩 시작. ProgressBar 표시
         repositoryListView.showProgress();
@@ -58,7 +58,7 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
         // Retrofit을 이용해 서버에 액세스한다
 
         // 지난 일주일간 만들어지고 언어가 language인 것을 쿼리로 전달한다
-        Observable<GitHubService.Repositories> observable = gitHubService.listRepos("language:" + repositoryListView.getSelectedLanguage() + " " + "created:>" + text);
+        Observable<GitHubService.Repositories> observable = gitHubService.listRepos("language:" + language + " " + "created:>" + text);
 
         // 입출력(IO)용 스레드로 통신해 메인스레드로 결과를 받아오게 한다
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<GitHubService.Repositories>() {

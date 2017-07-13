@@ -9,7 +9,7 @@ import rx.schedulers.Schedulers;
 public class DetailRepositoryPresenter implements DetailRepositoryContract.UserActions {
 
     // View에 직접 접근하지 않는다. interface를 통한 접근.
-    final DetailRepositoryContract.View detailView;
+    private final DetailRepositoryContract.View detailView;
 
     private final GitHubService gitHubService;
     private GitHubService.RepositoryItem repositoryItem;

@@ -121,7 +121,6 @@ public class RepositoryListActivity extends AppCompatActivity
      * Presenter로부터 지시를 받아 View 변경을 한다
      */
 
-    // TODO : Refactoring this
     @Override
     public String getSelectedLanguage() {
 

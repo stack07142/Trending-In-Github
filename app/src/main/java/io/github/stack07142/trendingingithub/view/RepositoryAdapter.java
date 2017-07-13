@@ -19,7 +19,7 @@ import java.util.List;
 import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.R;
 
-public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewHolder> {
+class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewHolder> {
 
     private final Context context;
     private final OnRepoItemClickListener onRepoItemClickListener;
@@ -27,7 +27,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
     private List<GitHubService.RepositoryItem> items;
 
     // RepositoryAdapter - Constructor
-    public RepositoryAdapter(Context context, OnRepoItemClickListener onRepoItemClickListener) {
+    RepositoryAdapter(Context context, OnRepoItemClickListener onRepoItemClickListener) {
 
         this.context = context;
         this.onRepoItemClickListener = onRepoItemClickListener;
@@ -38,13 +38,13 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
      *
      * @param items
      */
-    public void setItemsAndRefresh(List<GitHubService.RepositoryItem> items) {
+    void setItemsAndRefresh(List<GitHubService.RepositoryItem> items) {
 
         this.items = items;
         notifyDataSetChanged();
     }
 
-    public GitHubService.RepositoryItem getItemAt(int position) {
+    private GitHubService.RepositoryItem getItemAt(int position) {
 
         return items.get(position);
     }
@@ -113,7 +113,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
         private final ImageView image;
         private final TextView nStar;
 
-        public RepoViewHolder(View itemView) {
+        RepoViewHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.repo_name);

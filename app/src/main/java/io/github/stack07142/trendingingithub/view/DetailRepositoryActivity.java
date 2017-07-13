@@ -81,7 +81,6 @@ public class DetailRepositoryActivity extends AppCompatActivity implements Detai
         return fullRepositoryName;
     }
 
-    // TODO : Refactoring this
     @Override
     public void showRepositoryInfo(GitHubService.RepositoryItem response) {
 
