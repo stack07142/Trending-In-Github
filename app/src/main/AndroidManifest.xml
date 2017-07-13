@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <!-- <activity android:name=".NewGitHubRepoApplication"></activity> -->
-        <activity android:name=".view.DetailRepositoryActivity"></activity>
+        <activity android:name=".view.DetailRepositoryActivity" />
+        <activity android:name=".util.BaseActivityUtil"></activity>
     </application>
 
 </manifest>

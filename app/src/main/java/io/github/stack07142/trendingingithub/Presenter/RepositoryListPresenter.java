@@ -31,7 +31,6 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
      * Contract interface 구현
      */
 
-    // TODO : Refactoring this
     @Override
     public void selectLanguage(String language) {
 
@@ -44,7 +43,6 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
         repositoryListView.startDetailActivity(item.full_name);
     }
 
-    // TODO : Refactoring this
     private void loadRepositories(String language) {
 
         // 로딩 시작. ProgressBar 표시
@@ -70,6 +68,8 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
 
                 // GET Repositories -> Recycler View에 표시한다
                 repositoryListView.showRepositories(repositories);
+
+                repositoryListView.showError();
             }
 
             @Override

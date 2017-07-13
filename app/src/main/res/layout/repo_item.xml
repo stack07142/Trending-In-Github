@@ -30,8 +30,8 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:layout_toLeftOf="@+id/repo_star_image"
-            android:layout_toRightOf="@id/repo_image"
+            android:layout_toEndOf="@id/repo_image"
+            android:layout_toStartOf="@+id/repo_star_image"
             android:textAppearance="@android:style/TextAppearance.Large"
             tools:text="title" />
 
@@ -44,7 +44,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="4dp"
-            android:layout_toRightOf="@id/repo_image"
+            android:layout_toEndOf="@id/repo_image"
             android:maxLines="20"
             android:textAppearance="@android:style/TextAppearance"
             tools:text="contents" />
@@ -53,7 +53,7 @@
             android:id="@+id/repo_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_margin="8dp"
             android:textAppearance="@android:style/TextAppearance"
             tools:text="contents" />
@@ -63,9 +63,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:layout_toLeftOf="@id/repo_star"
+            android:layout_toStartOf="@id/repo_star"
             android:src="@drawable/ic_star_black_18dp" />
 
 

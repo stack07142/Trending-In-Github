@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,16 +13,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
-import io.github.stack07142.trendingingithub.model.GitHubService;
-import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.Presenter.RepositoryListPresenter;
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
+import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
+import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 
 /**
  * interface-View: Presenter -> View 조작
  */
-public class RepositoryListActivity extends AppCompatActivity
+public class RepositoryListActivity extends BaseActivityUtil
         implements RepositoryAdapter.OnRepoItemClickListener, RepositoryListContract.View {
 
     private static final String TAG = RepositoryListActivity.class.getSimpleName();
@@ -149,7 +149,7 @@ public class RepositoryListActivity extends AppCompatActivity
     @Override
     public void showError() {
 
-        Snackbar.make(coordinatorLayout, "읽을 수 없습니다", Snackbar.LENGTH_LONG)
+        Snackbar.make(coordinatorLayout, "Error in loading data", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 

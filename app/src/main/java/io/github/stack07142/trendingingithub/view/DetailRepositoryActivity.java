@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,8 +20,9 @@ import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.contract.DetailRepositoryContract;
 import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
+import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 
-public class DetailRepositoryActivity extends AppCompatActivity implements DetailRepositoryContract.View {
+public class DetailRepositoryActivity extends BaseActivityUtil implements DetailRepositoryContract.View {
 
     private static final String TAG = DetailRepositoryActivity.class.getSimpleName();
 
