@@ -80,6 +80,10 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
         holder.name.setText(item.name);
         holder.detail.setText(item.description);
         holder.nStar.setText(item.stargazers_count);
+        // language colors -> json query, default(null) color = #000000
+        // holder.languageImage.setBackgroundColor();
+        holder.language.setText(item.language);
+        holder.nFork.setText(item.forks_count);
 
         // 이미지는 Glide라는 라이브러리로 데이터를 설정한다
         Glide.with(context)
@@ -112,6 +116,9 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
         private final TextView detail;
         private final ImageView image;
         private final TextView nStar;
+        private final ImageView languageImage;
+        private final TextView language;
+        private final TextView nFork;
 
         RepoViewHolder(View itemView) {
             super(itemView);
@@ -120,6 +127,9 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
             detail = (TextView) itemView.findViewById(R.id.repo_detail);
             image = (ImageView) itemView.findViewById(R.id.repo_image);
             nStar = (TextView) itemView.findViewById(R.id.repo_star);
+            languageImage = (ImageView) itemView.findViewById(R.id.repo_language_icon);
+            language = (TextView) itemView.findViewById(R.id.repo_language);
+            nFork = (TextView) itemView.findViewById(R.id.repo_fork);
         }
     }
 

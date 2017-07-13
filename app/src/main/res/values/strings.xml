@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TrendingInGitHub</string>
+    <string name="lang_default">Unknown</string>
 </resources>
