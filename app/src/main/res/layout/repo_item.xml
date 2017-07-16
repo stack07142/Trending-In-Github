@@ -1,139 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:clickable="true"
-    android:foreground="?selectableItemBackground"
-    android:orientation="vertical"
-    app:cardUseCompatPadding="true"
-    tools:showIn="@layout/activity_repo_list">
 
-    <RelativeLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="repository"
+            type="io.github.stack07142.trendingingithub.model.GitHubService.RepositoryItem" />
+
+    </data>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:foreground="?selectableItemBackground"
+        android:orientation="vertical"
+        app:cardUseCompatPadding="true"
+        tools:showIn="@layout/activity_repo_list">
 
-        <ImageView
-            android:id="@+id/repo_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="8dp" />
-
-        <TextView
-            android:id="@+id/repo_name"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/repo_image"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:text="title" />
+            android:layout_margin="8dp">
 
-        <TextView
-            android:id="@+id/repo_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/repo_name"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_toEndOf="@id/repo_image"
-            android:maxLines="20"
-            android:textSize="14sp"
-            android:textStyle="normal"
-            tools:text="contents" />
+            <ImageView
+                android:id="@+id/repo_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp" />
 
-        <!-- footer -->
-        <!-- 1. language -->
+            <TextView
+                android:id="@+id/repo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/repo_image"
+                android:text="@{repository.name}"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="title" />
 
-        <ImageView
-            android:id="@+id/repo_language_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/repo_detail"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/shape" />
+            <TextView
+                android:id="@+id/repo_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/repo_name"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_toEndOf="@id/repo_image"
+                android:maxLines="20"
+                android:text="@{repository.description}"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="contents" />
 
-        <TextView
-            android:id="@+id/repo_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/repo_detail"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/repo_language_icon"
-            android:text="@string/lang_default"
-            android:textSize="13sp" />
+            <!-- footer -->
+            <!-- 1. language -->
 
-        <!-- 2. star -->
+            <ImageView
+                android:id="@+id/repo_language_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/repo_detail"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape" />
 
-        <ImageView
-            android:id="@id/repo_star_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/repo_detail"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/repo_language"
-            android:src="@drawable/ic_star_black_18dp" />
+            <TextView
+                android:id="@+id/repo_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/repo_detail"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/repo_language_icon"
+                android:text="@{repository.language}"
+                android:textSize="13sp"
+                tools:text="Java" />
 
-        <TextView
-            android:id="@+id/repo_star"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/repo_detail"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/repo_star_image"
-            android:textSize="13sp"
-            android:textStyle="normal"
-            tools:text="137" />
+            <!-- 2. star -->
 
-        <!-- 3. fork -->
+            <ImageView
+                android:id="@id/repo_star_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/repo_detail"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/repo_language"
+                android:src="@drawable/ic_star_black_18dp" />
 
-        <ImageView
-            android:id="@+id/repo_fork_image"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_below="@id/repo_detail"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/repo_star"
-            android:src="@drawable/fork_icon" />
+            <TextView
+                android:id="@+id/repo_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/repo_detail"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/repo_star_image"
+                android:text="@{repository.stargazers_count}"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                tools:text="137" />
 
-        <TextView
-            android:id="@+id/repo_fork"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/repo_detail"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/repo_fork_image"
-            android:text="@string/lang_default"
-            android:textSize="13sp" />
+            <!-- 3. fork -->
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/repo_fork_image"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_below="@id/repo_detail"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/repo_star"
+                android:src="@drawable/fork_icon" />
+
+            <TextView
+                android:id="@+id/repo_fork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/repo_detail"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/repo_fork_image"
+                android:text="@{repository.forks_count}"
+                android:textSize="13sp"
+                tools:text="222" />
+
+        </RelativeLayout>
 
 
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</layout>

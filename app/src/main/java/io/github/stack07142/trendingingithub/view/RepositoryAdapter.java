@@ -1,23 +1,25 @@
 package io.github.stack07142.trendingingithub.view;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.List;
 
-import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.R;
+import io.github.stack07142.trendingingithub.databinding.RepoItemBinding;
+import io.github.stack07142.trendingingithub.model.GitHubService;
 
 class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewHolder> {
 
@@ -35,8 +37,6 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
 
     /**
      * 리포지토리의 데이터를 설정해서 갱신한다
-     *
-     * @param items
      */
     void setItemsAndRefresh(List<GitHubService.RepositoryItem> items) {
 
@@ -69,26 +69,28 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
 
         final GitHubService.RepositoryItem item = getItemAt(position);
 
+        holder.bindItem(item);
+        final RepoItemBinding binding = holder.getBinding();
+
+
         // 뷰가 클릭되면 클릭된 아이템을 Listener에게 알린다
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 onRepoItemClickListener.onRepositoryItemClick(item);
             }
         });
 
-        holder.name.setText(item.name);
-        holder.detail.setText(item.description);
-        holder.nStar.setText(item.stargazers_count);
-        // language colors -> json query, default(null) color = #000000
-        // holder.languageImage.setBackgroundColor();
-        holder.language.setText(item.language);
-        holder.nFork.setText(item.forks_count);
+        // Change shape color dynamically
+        GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();
+        bgShape.setColor(Color.BLACK);
+        //holder.languageImage.setBackgroundColor(Color.MAGENTA);
 
         // 이미지는 Glide라는 라이브러리로 데이터를 설정한다
         Glide.with(context)
                 .load(item.owner.avatar_url)
-                .asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.image) {
+                .asBitmap().centerCrop().into(new BitmapImageViewTarget(binding.repoImage) {
 
             @Override
             protected void setResource(Bitmap resource) {
@@ -96,7 +98,7 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
                 RoundedBitmapDrawable circularBitmapDrawable =
                         RoundedBitmapDrawableFactory.create(context.getResources(), resource);
                 circularBitmapDrawable.setCircular(true);
-                holder.image.setImageDrawable(circularBitmapDrawable);
+                binding.repoImage.setImageDrawable(circularBitmapDrawable);
             }
         });
     }
@@ -112,25 +114,24 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
 
     static class RepoViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView name;
-        private final TextView detail;
-        private final ImageView image;
-        private final TextView nStar;
-        private final ImageView languageImage;
-        private final TextView language;
-        private final TextView nFork;
+        private RepoItemBinding binding;
 
         RepoViewHolder(View itemView) {
             super(itemView);
 
-            name = (TextView) itemView.findViewById(R.id.repo_name);
-            detail = (TextView) itemView.findViewById(R.id.repo_detail);
-            image = (ImageView) itemView.findViewById(R.id.repo_image);
-            nStar = (TextView) itemView.findViewById(R.id.repo_star);
-            languageImage = (ImageView) itemView.findViewById(R.id.repo_language_icon);
-            language = (TextView) itemView.findViewById(R.id.repo_language);
-            nFork = (TextView) itemView.findViewById(R.id.repo_fork);
+            binding = DataBindingUtil.bind(itemView);
         }
+
+        void bindItem(GitHubService.RepositoryItem item) {
+
+            binding.setRepository(item);
+        }
+
+        RepoItemBinding getBinding() {
+
+            return binding;
+        }
+
     }
 
     interface OnRepoItemClickListener {
