@@ -2,6 +2,7 @@ package io.github.stack07142.trendingingithub.Presenter;
 
 import io.github.stack07142.trendingingithub.contract.DetailRepositoryContract;
 import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.util.ResultCode;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -34,7 +35,7 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
         } catch (Exception e) {
 
             // View에 View 변경을 통지한다
-            detailView.showError("링크를 열수 없습니다.");
+            detailView.showNoti(ResultCode.FAIL);
         }
     }
 
@@ -68,13 +69,15 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
 
                         // View에 View 변경을 통지한다
                         detailView.showRepositoryInfo(response);
+
+                        detailView.showNoti(ResultCode.SUCCESS);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
 
                         // View에 View 변경을 통지한다
-                        detailView.showError("읽을 수 없습니다.");
+                        detailView.showNoti(ResultCode.FAIL);
                     }
                 });
     }

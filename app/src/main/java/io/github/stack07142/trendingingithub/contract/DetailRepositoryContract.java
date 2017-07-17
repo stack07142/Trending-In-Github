@@ -1,6 +1,7 @@
 package io.github.stack07142.trendingingithub.contract;
 
 import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.util.ResultCode;
 
 public interface DetailRepositoryContract {
 
@@ -16,7 +17,7 @@ public interface DetailRepositoryContract {
 
         void startBrowser(String url);
 
-        void showError(String message);
+        void showNoti(@ResultCode.Result int result);
     }
 
     /**

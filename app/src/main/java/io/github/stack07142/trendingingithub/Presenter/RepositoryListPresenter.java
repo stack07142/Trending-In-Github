@@ -4,8 +4,9 @@ import android.text.format.DateFormat;
 
 import java.util.Calendar;
 
-import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
+import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.util.ResultCode;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -69,14 +70,14 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
                 // GET Repositories -> Recycler View에 표시한다
                 repositoryListView.showRepositories(repositories);
 
-                repositoryListView.showNoti(RepositoryListContract.SUCCESS);
+                repositoryListView.showNoti(ResultCode.SUCCESS);
             }
 
             @Override
             public void onError(Throwable e) {
 
                 // 통신 실패 에러 표시. SnackBar
-                repositoryListView.showNoti(RepositoryListContract.FAIL);
+                repositoryListView.showNoti(ResultCode.FAIL);
             }
 
             @Override

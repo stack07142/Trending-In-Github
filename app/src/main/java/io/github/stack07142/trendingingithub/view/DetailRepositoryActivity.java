@@ -21,6 +21,7 @@ import io.github.stack07142.trendingingithub.databinding.ActivityDetailRepoBindi
 import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
+import io.github.stack07142.trendingingithub.util.ResultCode;
 
 public class DetailRepositoryActivity extends BaseActivityUtil implements DetailRepositoryContract.View {
 
@@ -113,9 +114,19 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
     }
 
     @Override
-    public void showError(String message) {
+    public void showNoti(@ResultCode.Result int result) {
 
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+        String resultText = "";
+
+        if (result == ResultCode.SUCCESS) {
+
+            resultText = getString(R.string.result_success);
+        } else if (result == ResultCode.FAIL) {
+
+            resultText = getString(R.string.result_fail);
+        }
+
+        Snackbar.make(findViewById(android.R.id.content), resultText, Snackbar.LENGTH_LONG)
                 .show();
     }
 }

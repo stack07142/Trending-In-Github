@@ -16,6 +16,7 @@ import io.github.stack07142.trendingingithub.databinding.ActivityRepoListBinding
 import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
+import io.github.stack07142.trendingingithub.util.ResultCode;
 
 /**
  * interface-View: Presenter -> View 조작
@@ -130,14 +131,14 @@ public class RepositoryListActivity extends BaseActivityUtil
     }
 
     @Override
-    public void showNoti(@RepositoryListContract.Result int result) {
+    public void showNoti(@ResultCode.Result int result) {
 
         String resultText = "";
 
-        if (result == RepositoryListContract.SUCCESS) {
+        if (result == ResultCode.SUCCESS) {
 
             resultText = getString(R.string.result_success);
-        } else if (result == RepositoryListContract.FAIL) {
+        } else if (result == ResultCode.FAIL) {
 
             resultText = getString(R.string.result_fail);
         }
