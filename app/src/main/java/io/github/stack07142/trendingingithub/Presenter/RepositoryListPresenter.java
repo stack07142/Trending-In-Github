@@ -69,14 +69,14 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
                 // GET Repositories -> Recycler View에 표시한다
                 repositoryListView.showRepositories(repositories);
 
-                repositoryListView.showError();
+                repositoryListView.showNoti(RepositoryListContract.SUCCESS);
             }
 
             @Override
             public void onError(Throwable e) {
 
                 // 통신 실패 에러 표시. SnackBar
-                repositoryListView.showError();
+                repositoryListView.showNoti(RepositoryListContract.FAIL);
             }
 
             @Override

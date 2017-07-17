@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TrendingInGitHub</string>
-    <string name="lang_default">Unknown</string>
+    <string name="result_success">Success</string>
+    <string name="result_fail">Error in loading data</string>
 </resources>

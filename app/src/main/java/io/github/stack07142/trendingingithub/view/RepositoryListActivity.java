@@ -130,10 +130,19 @@ public class RepositoryListActivity extends BaseActivityUtil
     }
 
     @Override
-    public void showError() {
+    public void showNoti(@RepositoryListContract.Result int result) {
 
-        Snackbar.make(mBinding.coordinatorLayout, "Error in loading data", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        String resultText = "";
+
+        if (result == RepositoryListContract.SUCCESS) {
+
+            resultText = getString(R.string.result_success);
+        } else if (result == RepositoryListContract.FAIL) {
+
+            resultText = getString(R.string.result_fail);
+        }
+
+        Snackbar.make(mBinding.coordinatorLayout, resultText, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     @Override
