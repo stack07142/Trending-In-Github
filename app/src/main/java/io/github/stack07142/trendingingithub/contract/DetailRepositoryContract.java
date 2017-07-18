@@ -13,6 +13,14 @@ public interface DetailRepositoryContract {
 
         String getFullRepositoryName();
 
+        void showProgress();
+
+        void hideProgress();
+
+        void showLayout();
+
+        void hideLayout();
+
         void showRepositoryInfo(GitHubService.RepositoryItem response);
 
         void startBrowser(String url);

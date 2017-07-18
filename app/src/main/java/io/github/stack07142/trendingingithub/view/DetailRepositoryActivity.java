@@ -58,6 +58,7 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
         fullRepositoryName = intent.getStringExtra(EXTRA_FULL_REPOSITORY_NAME);
 
         final GitHubService gitHubService = ((NewGitHubRepoApplication) getApplication()).getGitHubService();
+
         detailPresenter = new DetailRepositoryPresenter((DetailRepositoryContract.View) this, gitHubService);
         detailPresenter.prepare();
     }
@@ -128,5 +129,29 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
 
         Snackbar.make(findViewById(android.R.id.content), resultText, Snackbar.LENGTH_LONG)
                 .show();
+    }
+
+    @Override
+    public void showProgress() {
+
+        mBinding.progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+
+        mBinding.progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showLayout() {
+
+        mBinding.detailView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLayout() {
+
+        mBinding.detailView.setVisibility(View.INVISIBLE);
     }
 }

@@ -51,6 +51,9 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
      */
     private void loadRepository() {
 
+        detailView.hideLayout();
+        detailView.showProgress();
+
         String fullRepositoryName = detailView.getFullRepositoryName();
 
         // 리포지토리의 이름을 /로 분할한다
@@ -71,6 +74,9 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
                         detailView.showRepositoryInfo(response);
 
                         detailView.showNoti(ResultCode.SUCCESS);
+
+                        detailView.hideProgress();
+                        detailView.showLayout();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -78,6 +84,8 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
 
                         // View에 View 변경을 통지한다
                         detailView.showNoti(ResultCode.FAIL);
+
+                        detailView.hideProgress();
                     }
                 });
     }
