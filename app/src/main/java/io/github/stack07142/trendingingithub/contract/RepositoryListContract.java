@@ -37,5 +37,6 @@ public interface RepositoryListContract {
         void selectLanguage(String language);
 
         void selectRepositoryItem(GitHubService.RepositoryItem item);
+
     }
 }

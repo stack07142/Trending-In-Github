@@ -2,4 +2,6 @@
     <string name="app_name">TrendingInGitHub</string>
     <string name="result_success">Success</string>
     <string name="result_fail">Error in loading data</string>
+    <string name="apply">Apply</string>
+    <string name="refresh">Refresh</string>
 </resources>

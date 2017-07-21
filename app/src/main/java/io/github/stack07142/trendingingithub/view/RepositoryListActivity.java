@@ -9,20 +9,29 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+
 import io.github.stack07142.trendingingithub.Presenter.RepositoryListPresenter;
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
 import io.github.stack07142.trendingingithub.databinding.ActivityRepoListBinding;
 import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.FilterData;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
+import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
 /**
  * interface-View: Presenter -> View 조작
  */
 public class RepositoryListActivity extends BaseActivityUtil
-        implements RepositoryAdapter.OnRepoItemClickListener, RepositoryListContract.View {
+        implements RepositoryAdapter.OnRepoItemClickListener, RepositoryListContract.View, AAH_FabulousFragment.Callbacks {
+
+    private static final String TAG = RepositoryListActivity.class.getSimpleName();
+
+    // FAB
+    FilterData filterData;
 
     // Data Binding
     private ActivityRepoListBinding mBinding;
@@ -30,6 +39,7 @@ public class RepositoryListActivity extends BaseActivityUtil
     // View는 Presenter로 직접 접근하지 않는다. Interface를 통해 접근한다.
     private RepositoryListContract.UserAction repositoryListPresenter;
 
+    // RecyclerView Adapter
     private RepositoryAdapter repositoryAdapter;
 
     @Override
@@ -45,6 +55,21 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         // Presenter의 인스턴스 생성
         repositoryListPresenter = new RepositoryListPresenter((RepositoryListContract.View) this, gitHubService);
+
+        // FAB Listener
+        mBinding.fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                MyFabFragment dialogFrag = MyFabFragment.newInstance();
+                dialogFrag.setParentFab(mBinding.fab);
+                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+            }
+        });
+
+        // FAB
+        filterData = new FilterData();
     }
 
     /**
@@ -151,4 +176,26 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         DetailRepositoryActivity.start(this, fullRepositoryName);
     }
+
+    /**
+     * AAH_FabulousFragment.Callbacks implements
+     */
+
+    @Override
+    public void onResult(Object result) {
+
+        DebugLog.logD(TAG, "filter - onResult:  " + result.toString());
+
+        if (result.toString().equalsIgnoreCase("swiped_down")) {
+
+            DebugLog.logD(TAG, "filter - onResult:  TODO: about. swiped_down");
+        } else {
+
+            DebugLog.logD(TAG, "filter - onResult:  TODO: about. Handle result");
+
+            // Preference 저장
+            // Filter에 유지
+        }
+    }
+
 }

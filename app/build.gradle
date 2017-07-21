@@ -53,5 +53,11 @@ dependencies {
     // Font 적용 라이브러리 (Typekit)
     compile 'com.tsengvn:typekit:1.0.1'
 
+    // Filter animation
+    compile 'com.allattentionhere:fabulousfilter:0.0.2'
+    compile ('com.google.android:flexbox:0.2.7'){
+        exclude group: 'com.android.support'
+    }
+
     testCompile 'junit:junit:4.12'
 }
