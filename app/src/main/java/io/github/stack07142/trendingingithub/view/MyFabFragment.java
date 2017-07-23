@@ -1,7 +1,10 @@
 package io.github.stack07142.trendingingithub.view;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
@@ -18,6 +21,9 @@ import android.widget.TextView;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.google.android.flexbox.FlexboxLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +44,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
     private final int LANG_PAGE = 0;
     private final int PERIOD_PAGE = 1;
 
-    ArrayMap<String, List<String>> applied_filters = new ArrayMap<>();
-    List<TextView> languageTVs = new ArrayList<>();
-    List<TextView> periodTVs = new ArrayList<>();
+    ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
+    ArrayList<TextView> languageTVs = new ArrayList<>();
+    ArrayList<TextView> periodTVs = new ArrayList<>();
     private DisplayMetrics metrics;
 
     SectionsPagerAdapter mAdapter;
@@ -56,7 +62,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : applied_filters.entrySet()) {
 
             DebugLog.logD(TAG, "from activity: " + entry.getKey());
 
@@ -93,6 +99,13 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 // applied_filters 내용 출력
                 DebugLog.logD(TAG, applied_filters.get(LANGUAGE) != null ? applied_filters.get(LANGUAGE).toString() : "");
                 DebugLog.logD(TAG, applied_filters.get(CREATED) != null ? applied_filters.get(CREATED).toString() : "");
+
+                // preference 저장
+                setStringArrayPref(getContext(), "applied_filters", applied_filters.get(LANGUAGE));
+
+                // TEST : preference 불러오기
+                DebugLog.logD(TAG, "preference = " + getStringArrayPref(getContext(), "applied_filters").toString());
+
             }
         });
 
@@ -111,7 +124,10 @@ public class MyFabFragment extends AAH_FabulousFragment {
                     tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
                 }
 
-                applied_filters.get(LANGUAGE).clear();
+                if (applied_filters.get(LANGUAGE) != null) {
+
+                    applied_filters.get(LANGUAGE).clear();
+                }
             }
         });
 
@@ -305,7 +321,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
             applied_filters.get(key).add(value);
         } else {
 
-            List<String> temp = new ArrayList<>();
+            ArrayList<String> temp = new ArrayList<>();
             temp.add(value);
             applied_filters.put(key, temp);
         }
@@ -320,5 +336,54 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
             applied_filters.get(key).remove(value);
         }
+    }
+
+    private void setStringArrayPref(Context context, String key, ArrayList<String> values) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        JSONArray a = new JSONArray();
+
+        for (int i = 0; i < values.size(); i++) {
+
+            a.put(values.get(i));
+        }
+        if (!values.isEmpty()) {
+
+            editor.putString(key, a.toString());
+        } else {
+
+            editor.putString(key, null);
+        }
+
+        editor.apply();
+    }
+
+    private ArrayList<String> getStringArrayPref(Context context, String key) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String json = prefs.getString(key, null);
+        ArrayList<String> urls = new ArrayList<String>();
+
+        if (json != null) {
+
+            try {
+
+                JSONArray a = new JSONArray(json);
+
+                for (int i = 0; i < a.length(); i++) {
+
+                    String url = a.optString(i);
+                    urls.add(url);
+                }
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+
+        return urls;
     }
 }
