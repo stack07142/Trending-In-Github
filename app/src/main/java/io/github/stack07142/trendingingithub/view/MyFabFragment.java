@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
     ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
     ArrayList<TextView> languageTVs = new ArrayList<>();
     ArrayList<TextView> periodTVs = new ArrayList<>();
-    private DisplayMetrics metrics;
 
     SectionsPagerAdapter mAdapter;
     ViewPager vp_types;
@@ -86,7 +84,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         ImageButton imgbtn_refresh = (ImageButton) contentView.findViewById(R.id.imgbtn_refresh);
         ImageButton imgbtn_apply = (ImageButton) contentView.findViewById(R.id.imgbtn_apply);
 
-        // Apply 버튼
+        // Apply 버튼 Click Listener
         imgbtn_apply.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -101,15 +99,16 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 DebugLog.logD(TAG, applied_filters.get(CREATED) != null ? applied_filters.get(CREATED).toString() : "");
 
                 // preference 저장
-                setStringArrayPref(getContext(), "applied_filters", applied_filters.get(LANGUAGE));
+                setStringArrayPref(getContext(), LANGUAGE, applied_filters.get(LANGUAGE));
+                setStringArrayPref(getContext(), CREATED, applied_filters.get(CREATED));
 
                 // TEST : preference 불러오기
-                DebugLog.logD(TAG, "preference = " + getStringArrayPref(getContext(), "applied_filters").toString());
-
+                DebugLog.logD(TAG, "preference = " + getStringArrayPref(getContext(), LANGUAGE).toString());
+                DebugLog.logD(TAG, "preference = " + getStringArrayPref(getContext(), CREATED).toString());
             }
         });
 
-        // Refresh 버튼
+        // Refresh 버튼 Click Listener
         imgbtn_refresh.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -151,7 +150,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         super.setupDialog(dialog, style); //call super at last
     }
 
-    public class SectionsPagerAdapter extends PagerAdapter {
+    private class SectionsPagerAdapter extends PagerAdapter {
 
         @Override
         public Object instantiateItem(ViewGroup collection, int position) {
@@ -265,17 +264,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                     }
                 }
             });
-            /*
-            try {
 
-                DebugLog.logD("k9res", "key: " + filter_category + " |val:" + keys.get(finalI));
-                DebugLog.logD("k9res", "applied_filters != null: " + (applied_filters != null));
-                DebugLog.logD("k9res", "applied_filters.get(key) != null: " + (applied_filters.get(filter_category) != null));
-                DebugLog.logD("k9res", "applied_filters.get(key).contains(keys.get(finalI)): " + (applied_filters.get(filter_category).contains(keys.get(finalI))));
-            } catch (Exception e) {
-
-            }
-            */
             if (applied_filters != null && applied_filters.get(filter_category) != null && applied_filters.get(filter_category).contains(keys.get(finalI))) {
 
                 tv.setTag(SELECTED);
@@ -343,13 +332,14 @@ public class MyFabFragment extends AAH_FabulousFragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
 
-        JSONArray a = new JSONArray();
+        if (values != null && !values.isEmpty()) {
 
-        for (int i = 0; i < values.size(); i++) {
+            JSONArray a = new JSONArray();
 
-            a.put(values.get(i));
-        }
-        if (!values.isEmpty()) {
+            for (int i = 0; i < values.size(); i++) {
+
+                a.put(values.get(i));
+            }
 
             editor.putString(key, a.toString());
         } else {
@@ -365,7 +355,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         String json = prefs.getString(key, null);
-        ArrayList<String> urls = new ArrayList<String>();
+        ArrayList<String> urls = new ArrayList<>();
 
         if (json != null) {
 
