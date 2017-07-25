@@ -10,13 +10,14 @@ public class FilterData {
 
     public FilterData() {
 
-        languageList.add("java");
-        languageList.add("objective-c");
-        languageList.add("swift");
-        languageList.add("groovy");
-        languageList.add("python");
-        languageList.add("ruby");
-        languageList.add("c");
+        languageList.add("All");
+        languageList.add("Java");
+        languageList.add("Objective-C");
+        languageList.add("Swift");
+        languageList.add("Groovy");
+        languageList.add("Python");
+        languageList.add("Ruby");
+        languageList.add("C");
 
         createdList.add("today");
         createdList.add("this week");

@@ -89,7 +89,7 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         // Spinner set adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-        adapter.addAll("java", "objective-c", "swift", "groovy", "python", "ruby", "c");
+        adapter.addAll("All", "java", "objective-c", "swift", "groovy", "python", "ruby", "c");
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mBinding.languageSpinner.setAdapter(adapter);
@@ -193,8 +193,7 @@ public class RepositoryListActivity extends BaseActivityUtil
 
             DebugLog.logD(TAG, "filter - onResult:  TODO: about. Handle result");
 
-            // Preference 저장
-            // Filter에 유지
+            // Query
         }
     }
 

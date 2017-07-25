@@ -72,7 +72,6 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
         holder.bindItem(item);
         final RepoItemBinding binding = holder.getBinding();
 
-
         // 뷰가 클릭되면 클릭된 아이템을 Listener에게 알린다
         holder.itemView.setOnClickListener(new View.OnClickListener() {
 
@@ -81,6 +80,9 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
                 onRepoItemClickListener.onRepositoryItemClick(item);
             }
         });
+
+        // Repo의 Language가 null인 경우 language icon을 표시하지 않는다
+        if (item.language == null) holder.binding.repoLanguageIcon.setVisibility(View.GONE);
 
         // Change shape color dynamically
         GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();

@@ -51,6 +51,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
     ViewPager vp_types;
     TabLayout tabs_types;
 
+    ImageButton imgbtn_refresh;
+
     public static MyFabFragment newInstance() {
 
         return new MyFabFragment();
@@ -59,6 +61,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        applied_filters.put(LANGUAGE, getStringArrayPref(getContext(), LANGUAGE));
+        applied_filters.put(CREATED, getStringArrayPref(getContext(), CREATED));
 
         for (Map.Entry<String, ArrayList<String>> entry : applied_filters.entrySet()) {
 
@@ -74,6 +79,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
     @Override
     public void setupDialog(Dialog dialog, int style) {
 
+        DebugLog.logD(TAG, "setupDialog()");
+
         View contentView = View.inflate(getContext(), R.layout.filter_view, null);
 
         RelativeLayout rl_content = (RelativeLayout) contentView.findViewById(R.id.rl_content);
@@ -81,7 +88,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         tabs_types = (TabLayout) contentView.findViewById(R.id.tabs_types);
 
         LinearLayout ll_buttons = (LinearLayout) contentView.findViewById(R.id.ll_buttons);
-        ImageButton imgbtn_refresh = (ImageButton) contentView.findViewById(R.id.imgbtn_refresh);
+        imgbtn_refresh = (ImageButton) contentView.findViewById(R.id.imgbtn_refresh);
         ImageButton imgbtn_apply = (ImageButton) contentView.findViewById(R.id.imgbtn_apply);
 
         // Apply 버튼 Click Listener
@@ -94,17 +101,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
                 DebugLog.logD(TAG, "apply button clicked : ");
 
-                // applied_filters 내용 출력
-                DebugLog.logD(TAG, applied_filters.get(LANGUAGE) != null ? applied_filters.get(LANGUAGE).toString() : "");
-                DebugLog.logD(TAG, applied_filters.get(CREATED) != null ? applied_filters.get(CREATED).toString() : "");
-
                 // preference 저장
                 setStringArrayPref(getContext(), LANGUAGE, applied_filters.get(LANGUAGE));
                 setStringArrayPref(getContext(), CREATED, applied_filters.get(CREATED));
-
-                // TEST : preference 불러오기
-                DebugLog.logD(TAG, "preference = " + getStringArrayPref(getContext(), LANGUAGE).toString());
-                DebugLog.logD(TAG, "preference = " + getStringArrayPref(getContext(), CREATED).toString());
             }
         });
 
@@ -214,10 +213,12 @@ public class MyFabFragment extends AAH_FabulousFragment {
         switch (filter_category) {
 
             case LANGUAGE:
+
                 keys = ((RepositoryListActivity) getActivity()).filterData.getLanguageList();
                 break;
 
             case CREATED:
+
                 keys = ((RepositoryListActivity) getActivity()).filterData.getCreatedList();
                 break;
 
@@ -228,6 +229,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
             View subchild = getActivity().getLayoutInflater().inflate(R.layout.single_chip, null);
 
             final TextView tv = ((TextView) subchild.findViewById(R.id.txt_title));
+
             tv.setText(keys.get(i));
 
             final int finalI = i;
@@ -265,7 +267,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 }
             });
 
-            if (applied_filters != null && applied_filters.get(filter_category) != null && applied_filters.get(filter_category).contains(keys.get(finalI))) {
+            if (applied_filters != null && applied_filters.get(filter_category) != null
+                    && applied_filters.get(filter_category).contains(keys.get(finalI))) {
 
                 tv.setTag(SELECTED);
                 tv.setBackgroundResource(R.drawable.chip_selected);
