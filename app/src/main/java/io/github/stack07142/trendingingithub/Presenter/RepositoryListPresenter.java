@@ -72,38 +72,60 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
         // Retrofit을 이용해 서버에 액세스한다
 
         // Test code
-        String language = languages.get(0);
+        final int size = languages.size();
 
-        // 지난 일주일간 만들어지고 언어가 language인 것을 쿼리로 전달한다
-        Observable<GitHubService.Repositories> observable = gitHubService.listRepos("language:" + (language.equals("All") ? "null" : language) + " " + "created:>" + text);
+        final ArrayList<GitHubService.RepositoryItem> retItems = new ArrayList<>();
 
-        // 입출력(IO)용 스레드로 통신해 메인스레드로 결과를 받아오게 한다
-        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<GitHubService.Repositories>() {
+        for (int i = 0; i < size; i++) {
 
-            @Override
-            public void onNext(GitHubService.Repositories repositories) {
+            String language = languages.get(i);
 
-                repositoryListView.hideProgress();
+            final int finalI = i;
 
-                // GET Repositories -> Recycler View에 표시한다
-                repositoryListView.showRepositories(repositories);
+            // 지난 일주일간 만들어지고 언어가 language인 것을 쿼리로 전달한다
+            Observable<GitHubService.Repositories> observable = gitHubService.listRepos("language:" + (language.equals("All") ? "null" : language) + " " + "created:>" + text);
 
-                repositoryListView.showNoti(ResultCode.SUCCESS);
-            }
+            // 입출력(IO)용 스레드로 통신해 메인스레드로 결과를 받아오게 한다
+            observable.subscribeOn(Schedulers.io()).
 
-            @Override
-            public void onError(Throwable e) {
+                    observeOn(AndroidSchedulers.mainThread()).
 
-                // 통신 실패 에러 표시. SnackBar
-                repositoryListView.showNoti(ResultCode.FAIL);
-            }
+                    subscribe(new Subscriber<GitHubService.Repositories>() {
 
-            @Override
-            public void onCompleted() {
+                        @Override
+                        public void onNext(GitHubService.Repositories repositories) {
 
-                // Do Nothing.
-            }
-        });
+                            for (GitHubService.RepositoryItem item : repositories.items) {
+
+                                retItems.add(item);
+                            }
+
+                            if (finalI == size - 1) {
+
+                                repositoryListView.hideProgress();
+
+                                // GET Repositories -> Recycler View에 표시한다
+                                repositoryListView.showRepositories(retItems);
+
+                                repositoryListView.showNoti(ResultCode.SUCCESS);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                            // 통신 실패 에러 표시. SnackBar
+                            repositoryListView.showNoti(ResultCode.FAIL);
+                        }
+
+                        @Override
+                        public void onCompleted() {
+
+                            // Do Nothing.
+                        }
+                    });
+        }
+
     }
 
     @Override

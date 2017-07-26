@@ -61,6 +61,19 @@ public class FilterPreference {
                 e.printStackTrace();
             }
         }
+        // 최초 실행 시 preference에 저장된 것이 없는 경우
+        else {
+
+            if (key.equals(LANGUAGE)) {
+
+                urls.add("All");
+                setStringArrayPref(context, LANGUAGE, urls);
+            } else if (key.equals(CREATED)) {
+
+                urls.add("this week");
+                setStringArrayPref(context, CREATED, urls);
+            }
+        }
 
         return urls;
     }

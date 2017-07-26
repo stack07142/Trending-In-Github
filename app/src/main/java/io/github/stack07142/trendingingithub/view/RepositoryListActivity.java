@@ -76,6 +76,8 @@ public class RepositoryListActivity extends BaseActivityUtil
         // FAB
         filterData = new FilterData();
 
+
+
         applied_filters.put(FilterPreference.LANGUAGE, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.LANGUAGE));
         applied_filters.put(FilterPreference.CREATED, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.CREATED));
 
@@ -160,10 +162,9 @@ public class RepositoryListActivity extends BaseActivityUtil
     }
 
     @Override
-    public void showRepositories(GitHubService.Repositories repositories) {
+    public void showRepositories(ArrayList<GitHubService.RepositoryItem> repositories) {
 
-        // GET Repositories -> Recycler view adapter에 설정한다
-        repositoryAdapter.setItemsAndRefresh(repositories.items);
+        repositoryAdapter.setItemsAndRefresh(repositories);
     }
 
     @Override

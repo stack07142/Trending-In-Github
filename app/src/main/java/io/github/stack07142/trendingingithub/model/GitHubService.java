@@ -42,9 +42,9 @@ public interface GitHubService {
         public final List<RepositoryItem> items;
 
         public Repositories(List<RepositoryItem> items) {
+
             this.items = items;
         }
-
     }
 
     /**

@@ -23,7 +23,7 @@ public interface RepositoryListContract {
 
         void hideProgress();
 
-        void showRepositories(GitHubService.Repositories repositories);
+        void showRepositories(ArrayList<GitHubService.RepositoryItem> repositories);
 
         void showNoti(@ResultCode.Result int result);
 
