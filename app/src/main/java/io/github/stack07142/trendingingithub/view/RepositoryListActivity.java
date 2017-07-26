@@ -7,8 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
@@ -77,7 +75,6 @@ public class RepositoryListActivity extends BaseActivityUtil
         filterData = new FilterData();
 
 
-
         applied_filters.put(FilterPreference.LANGUAGE, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.LANGUAGE));
         applied_filters.put(FilterPreference.CREATED, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.CREATED));
 
@@ -99,33 +96,6 @@ public class RepositoryListActivity extends BaseActivityUtil
         // Recycler View - set adapter, adapter 생성 시 OnRepoItemClickListener이 구현되었음을 보장
         repositoryAdapter = new RepositoryAdapter((Context) this, (RepositoryAdapter.OnRepoItemClickListener) this);
         mBinding.contentLayout.recyclerRepos.setAdapter(repositoryAdapter);
-
-        // Spinner set adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-        adapter.addAll("All", "java", "objective-c", "swift", "groovy", "python", "ruby", "c");
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        mBinding.languageSpinner.setAdapter(adapter);
-
-        // Spinner Item Select Listener
-        mBinding.languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                // 선택시 뿐만 아니라 처음에도 호출된다
-                String language = (String) mBinding.languageSpinner.getItemAtPosition(position);
-
-                // Presenter에 Event 발생을 통지한다
-                //repositoryListPresenter.selectLanguage(language, "this week");
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-                // Do Nothing
-            }
-        });
     }
 
     /**
@@ -142,12 +112,6 @@ public class RepositoryListActivity extends BaseActivityUtil
      * Contract View interface 구현
      * Presenter로부터 지시를 받아 View 변경을 한다
      */
-
-    @Override
-    public String getSelectedLanguage() {
-
-        return (String) mBinding.languageSpinner.getSelectedItem();
-    }
 
     @Override
     public void showProgress() {

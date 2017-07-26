@@ -17,8 +17,6 @@ public interface RepositoryListContract {
      */
     interface View {
 
-        String getSelectedLanguage();
-
         void showProgress();
 
         void hideProgress();

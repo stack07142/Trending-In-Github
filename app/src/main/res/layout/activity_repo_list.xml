@@ -45,13 +45,6 @@
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
-            <Spinner
-                android:id="@+id/language_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:fitsSystemWindows="true" />
-
         </android.support.design.widget.AppBarLayout>
 
         <include

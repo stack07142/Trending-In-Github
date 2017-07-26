@@ -25,8 +25,8 @@
             app:tabIndicatorHeight="2dp"
             app:tabMode="scrollable"
             app:tabPaddingBottom="0dp"
-            app:tabPaddingEnd="-10dp"
-            app:tabPaddingStart="-10dp"
+            app:tabPaddingEnd="-12dp"
+            app:tabPaddingStart="-12dp"
             app:tabPaddingTop="0dp"
             app:tabSelectedTextColor="@android:color/white"
             app:tabTextColor="@color/bg" />

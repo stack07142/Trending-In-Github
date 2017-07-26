@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TrendingInGitHub</string>
+    <string name="app_name">Trending In GitHub</string>
     <string name="result_success">Success</string>
     <string name="result_fail">Error in loading data</string>
     <string name="apply">Apply</string>

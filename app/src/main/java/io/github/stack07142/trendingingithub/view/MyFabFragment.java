@@ -21,10 +21,8 @@ import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.github.stack07142.trendingingithub.R;
-import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.FilterPreference;
 
 import static io.github.stack07142.trendingingithub.util.FilterPreference.getStringArrayPref;
@@ -61,16 +59,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
         applied_filters.put(FilterPreference.LANGUAGE, getStringArrayPref(getContext(), FilterPreference.LANGUAGE));
         applied_filters.put(FilterPreference.CREATED, getStringArrayPref(getContext(), FilterPreference.CREATED));
-
-        for (Map.Entry<String, ArrayList<String>> entry : applied_filters.entrySet()) {
-
-            DebugLog.logD(TAG, "from activity: " + entry.getKey());
-
-            for (String s : entry.getValue()) {
-
-                DebugLog.logD(TAG, "from activity val: " + s);
-            }
-        }
     }
 
     private boolean checkApplyCondition() {
@@ -102,8 +90,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
     @Override
     public void setupDialog(Dialog dialog, int style) {
 
-        DebugLog.logD(TAG, "setupDialog()");
-
         View contentView = View.inflate(getContext(), R.layout.filter_view, null);
 
         RelativeLayout rl_content = (RelativeLayout) contentView.findViewById(R.id.rl_content);
@@ -119,8 +105,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
             @Override
             public void onClick(View v) {
-
-                DebugLog.logD(TAG, "apply button clicked : ");
 
                 // Apply 조건 체크
                 if (checkApplyCondition()) {
@@ -139,8 +123,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
             @Override
             public void onClick(View v) {
-
-                DebugLog.logD(TAG, "refresh button clicked : ");
 
                 for (TextView tv : languageTVs) {
 
@@ -269,8 +251,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
                     if (tv.getTag() != null && tv.getTag().equals(SELECTED)) {
 
-                        DebugLog.logD(TAG, "unselected " + tv.getText());
-
                         tv.setTag(UNSELECTED);
                         tv.setBackgroundResource(R.drawable.chip_unselected);
                         tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
@@ -297,8 +277,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
                                 languageTVs.get(0).setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
                             }
                         }
-
-                        DebugLog.logD(TAG, "selected " + tv.getText());
 
                         tv.setTag(SELECTED);
                         tv.setBackgroundResource(R.drawable.chip_selected);
