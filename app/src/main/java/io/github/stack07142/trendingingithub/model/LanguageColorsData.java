@@ -373,6 +373,11 @@ public class LanguageColorsData {
 
     public int getColor(String language) {
 
-        return Color.parseColor(colorMap.get(language));
+        if (colorMap.containsKey(language)) {
+
+            return Color.parseColor(colorMap.get(language));
+        }
+
+        return Color.parseColor("#969696");
     }
 }
