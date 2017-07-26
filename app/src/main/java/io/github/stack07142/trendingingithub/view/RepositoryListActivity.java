@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,15 +12,18 @@ import android.widget.ArrayAdapter;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
+import java.util.ArrayList;
+
 import io.github.stack07142.trendingingithub.Presenter.RepositoryListPresenter;
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
 import io.github.stack07142.trendingingithub.databinding.ActivityRepoListBinding;
-import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.model.FilterData;
+import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 import io.github.stack07142.trendingingithub.util.DebugLog;
+import io.github.stack07142.trendingingithub.util.FilterPreference;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
 /**
@@ -32,6 +36,7 @@ public class RepositoryListActivity extends BaseActivityUtil
 
     // FAB
     FilterData filterData;
+    ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
 
     // Data Binding
     private ActivityRepoListBinding mBinding;
@@ -70,6 +75,12 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         // FAB
         filterData = new FilterData();
+
+        applied_filters.put(FilterPreference.LANGUAGE, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.LANGUAGE));
+        applied_filters.put(FilterPreference.CREATED, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.CREATED));
+
+        // 최초 Query
+        repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreference.LANGUAGE), applied_filters.get(FilterPreference.CREATED).get(0));
     }
 
     /**
@@ -104,7 +115,7 @@ public class RepositoryListActivity extends BaseActivityUtil
                 String language = (String) mBinding.languageSpinner.getItemAtPosition(position);
 
                 // Presenter에 Event 발생을 통지한다
-                repositoryListPresenter.selectLanguage(language);
+                //repositoryListPresenter.selectLanguage(language, "this week");
             }
 
             @Override
@@ -188,12 +199,15 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         if (result.toString().equalsIgnoreCase("swiped_down")) {
 
-            DebugLog.logD(TAG, "filter - onResult:  TODO: about. swiped_down");
+            DebugLog.logD(TAG, "filter - onResult: <<swiped_down>>, DO NOTHING.");
         } else {
 
-            DebugLog.logD(TAG, "filter - onResult:  TODO: about. Handle result");
+            DebugLog.logD(TAG, "filter - onResult: " + result.toString());
+
+            applied_filters = (ArrayMap<String, ArrayList<String>>) result;
 
             // Query
+            repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreference.LANGUAGE), applied_filters.get(FilterPreference.CREATED).get(0));
         }
     }
 

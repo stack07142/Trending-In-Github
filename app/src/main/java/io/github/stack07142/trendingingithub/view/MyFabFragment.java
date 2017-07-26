@@ -1,10 +1,7 @@
 package io.github.stack07142.trendingingithub.view;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
@@ -21,22 +18,21 @@ import android.widget.TextView;
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.google.android.flexbox.FlexboxLayout;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.util.DebugLog;
+import io.github.stack07142.trendingingithub.util.FilterPreference;
+
+import static io.github.stack07142.trendingingithub.util.FilterPreference.getStringArrayPref;
+import static io.github.stack07142.trendingingithub.util.FilterPreference.setStringArrayPref;
 
 public class MyFabFragment extends AAH_FabulousFragment {
 
     private final String TAG = MyFabFragment.class.getSimpleName();
 
-    private final String LANGUAGE = "Language";
-    private final String CREATED = "Created";
     private final String SELECTED = "selected";
     private final String UNSELECTED = "unselected";
 
@@ -62,8 +58,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        applied_filters.put(LANGUAGE, getStringArrayPref(getContext(), LANGUAGE));
-        applied_filters.put(CREATED, getStringArrayPref(getContext(), CREATED));
+        applied_filters.put(FilterPreference.LANGUAGE, getStringArrayPref(getContext(), FilterPreference.LANGUAGE));
+        applied_filters.put(FilterPreference.CREATED, getStringArrayPref(getContext(), FilterPreference.CREATED));
 
         for (Map.Entry<String, ArrayList<String>> entry : applied_filters.entrySet()) {
 
@@ -74,6 +70,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 DebugLog.logD(TAG, "from activity val: " + s);
             }
         }
+
+        // 최초 쿼리
     }
 
     @Override
@@ -102,8 +100,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 DebugLog.logD(TAG, "apply button clicked : ");
 
                 // preference 저장
-                setStringArrayPref(getContext(), LANGUAGE, applied_filters.get(LANGUAGE));
-                setStringArrayPref(getContext(), CREATED, applied_filters.get(CREATED));
+                setStringArrayPref(getContext(), FilterPreference.LANGUAGE, applied_filters.get(FilterPreference.LANGUAGE));
+                setStringArrayPref(getContext(), FilterPreference.CREATED, applied_filters.get(FilterPreference.CREATED));
             }
         });
 
@@ -122,9 +120,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
                     tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
                 }
 
-                if (applied_filters.get(LANGUAGE) != null) {
+                if (applied_filters.get(FilterPreference.LANGUAGE) != null) {
 
-                    applied_filters.get(LANGUAGE).clear();
+                    applied_filters.get(FilterPreference.LANGUAGE).clear();
                 }
             }
         });
@@ -161,11 +159,11 @@ public class MyFabFragment extends AAH_FabulousFragment {
             switch (position) {
 
                 case LANG_PAGE:
-                    inflateLayoutWithFilters(LANGUAGE, fbl);
+                    inflateLayoutWithFilters(FilterPreference.LANGUAGE, fbl);
                     break;
 
                 case PERIOD_PAGE:
-                    inflateLayoutWithFilters(CREATED, fbl);
+                    inflateLayoutWithFilters(FilterPreference.CREATED, fbl);
                     break;
             }
 
@@ -189,10 +187,10 @@ public class MyFabFragment extends AAH_FabulousFragment {
             switch (position) {
 
                 case 0:
-                    return LANGUAGE;
+                    return FilterPreference.LANGUAGE;
 
                 case 1:
-                    return CREATED;
+                    return FilterPreference.CREATED;
 
             }
 
@@ -212,12 +210,12 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
         switch (filter_category) {
 
-            case LANGUAGE:
+            case FilterPreference.LANGUAGE:
 
                 keys = ((RepositoryListActivity) getActivity()).filterData.getLanguageList();
                 break;
 
-            case CREATED:
+            case FilterPreference.CREATED:
 
                 keys = ((RepositoryListActivity) getActivity()).filterData.getCreatedList();
                 break;
@@ -251,7 +249,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                         removeFromSelectedMap(filter_category, finalKeys.get(finalI));
                     } else {
 
-                        if (filter_category.equals(CREATED)) {
+                        if (filter_category.equals(FilterPreference.CREATED)) {
 
                             clearPeriodSelected();
                         }
@@ -279,7 +277,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
             }
 
-            if (filter_category.equals(LANGUAGE)) {
+            if (filter_category.equals(FilterPreference.LANGUAGE)) {
 
                 languageTVs.add(tv);
             } else {
@@ -300,9 +298,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
             tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
         }
 
-        if (applied_filters.get(CREATED) != null) {
+        if (applied_filters.get(FilterPreference.CREATED) != null) {
 
-            applied_filters.get(CREATED).clear();
+            applied_filters.get(FilterPreference.CREATED).clear();
         }
     }
 
@@ -328,55 +326,5 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
             applied_filters.get(key).remove(value);
         }
-    }
-
-    private void setStringArrayPref(Context context, String key, ArrayList<String> values) {
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        if (values != null && !values.isEmpty()) {
-
-            JSONArray a = new JSONArray();
-
-            for (int i = 0; i < values.size(); i++) {
-
-                a.put(values.get(i));
-            }
-
-            editor.putString(key, a.toString());
-        } else {
-
-            editor.putString(key, null);
-        }
-
-        editor.apply();
-    }
-
-    private ArrayList<String> getStringArrayPref(Context context, String key) {
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-        String json = prefs.getString(key, null);
-        ArrayList<String> urls = new ArrayList<>();
-
-        if (json != null) {
-
-            try {
-
-                JSONArray a = new JSONArray(json);
-
-                for (int i = 0; i < a.length(); i++) {
-
-                    String url = a.optString(i);
-                    urls.add(url);
-                }
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-            }
-        }
-
-        return urls;
     }
 }

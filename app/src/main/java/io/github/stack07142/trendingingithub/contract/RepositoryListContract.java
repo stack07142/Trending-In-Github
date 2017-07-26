@@ -1,5 +1,7 @@
 package io.github.stack07142.trendingingithub.contract;
 
+import java.util.ArrayList;
+
 import io.github.stack07142.trendingingithub.model.GitHubService;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
@@ -34,7 +36,7 @@ public interface RepositoryListContract {
      */
     interface UserAction {
 
-        void selectLanguage(String language);
+        void selectLanguage(ArrayList<String> languages, String period);
 
         void selectRepositoryItem(GitHubService.RepositoryItem item);
 

@@ -1,7 +1,9 @@
 package io.github.stack07142.trendingingithub.Presenter;
 
+import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
@@ -33,28 +35,44 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
      */
 
     @Override
-    public void selectLanguage(String language) {
-
-        loadRepositories(language);
-    }
-
-    @Override
-    public void selectRepositoryItem(GitHubService.RepositoryItem item) {
-
-        repositoryListView.startDetailActivity(item.full_name);
-    }
-
-    private void loadRepositories(String language) {
+    public void selectLanguage(ArrayList<String> languages, @NonNull String period) {
 
         // 로딩 시작. ProgressBar 표시
         repositoryListView.showProgress();
 
-        // 일주일 전 날짜 문자열 지금이 2016-10-27이면 2016-10-20 이라는 문자열을 얻는다
+        // GET Query Period
         final Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -7);
+
+        switch (period) {
+
+            case "today":
+                calendar.add(Calendar.DAY_OF_MONTH, -1);
+                break;
+
+            // 일주일 전 날짜 문자열 지금이 2016-10-27이면 2016-10-20 이라는 문자열을 얻는다
+            case "this week":
+                calendar.add(Calendar.DAY_OF_MONTH, -7);
+                break;
+
+            case "this month":
+                calendar.add(Calendar.DAY_OF_MONTH, -30);
+                break;
+
+            case "this year":
+                calendar.add(Calendar.DAY_OF_MONTH, -365);
+                break;
+
+            default:
+                calendar.add(Calendar.DAY_OF_MONTH, -7);
+                break;
+        }
+
         String text = DateFormat.format("yyyy-MM-dd", calendar).toString();
 
         // Retrofit을 이용해 서버에 액세스한다
+
+        // Test code
+        String language = languages.get(0);
 
         // 지난 일주일간 만들어지고 언어가 language인 것을 쿼리로 전달한다
         Observable<GitHubService.Repositories> observable = gitHubService.listRepos("language:" + (language.equals("All") ? "null" : language) + " " + "created:>" + text);
@@ -86,5 +104,11 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
                 // Do Nothing.
             }
         });
+    }
+
+    @Override
+    public void selectRepositoryItem(GitHubService.RepositoryItem item) {
+
+        repositoryListView.startDetailActivity(item.full_name);
     }
 }
