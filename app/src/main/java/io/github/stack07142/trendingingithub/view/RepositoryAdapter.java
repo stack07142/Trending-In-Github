@@ -3,7 +3,6 @@ package io.github.stack07142.trendingingithub.view;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -20,6 +19,7 @@ import java.util.List;
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.databinding.RepoItemBinding;
 import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.LanguageColorsData;
 
 class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewHolder> {
 
@@ -82,12 +82,17 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
         });
 
         // Repo의 Language가 null인 경우 language icon을 표시하지 않는다
-        if (item.language == null) holder.binding.repoLanguageIcon.setVisibility(View.GONE);
+        if (item.language == null) {
 
-        // Change shape color dynamically
-        GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();
-        bgShape.setColor(Color.BLACK);
-        //holder.languageImage.setBackgroundColor(Color.MAGENTA);
+            holder.binding.repoLanguageIcon.setVisibility(View.GONE);
+        } else {
+
+            holder.binding.repoLanguageIcon.setVisibility(View.VISIBLE);
+
+            // Change shape color dynamically
+            GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();
+            bgShape.setColor(new LanguageColorsData().getColor(item.language));
+        }
 
         // 이미지는 Glide라는 라이브러리로 데이터를 설정한다
         Glide.with(context)
