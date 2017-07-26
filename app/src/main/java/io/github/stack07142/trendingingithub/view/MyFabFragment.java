@@ -71,8 +71,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 DebugLog.logD(TAG, "from activity val: " + s);
             }
         }
-
-        // 최초 쿼리
     }
 
     private boolean checkApplyCondition() {
