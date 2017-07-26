@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.google.android.flexbox.FlexboxLayout;
@@ -74,6 +75,32 @@ public class MyFabFragment extends AAH_FabulousFragment {
         // 최초 쿼리
     }
 
+    private boolean checkApplyCondition() {
+
+        boolean ret = true;
+
+        if (applied_filters.get(FilterPreference.LANGUAGE) == null) {
+
+            Toast.makeText(getContext(), getString(R.string.filter_error_null_lang), Toast.LENGTH_SHORT).show();
+            ret = false;
+        } else {
+
+            if (applied_filters.get(FilterPreference.LANGUAGE).size() > 3) {
+
+                Toast.makeText(getContext(), getString(R.string.filter_error_exceed), Toast.LENGTH_SHORT).show();
+                ret = false;
+            }
+        }
+
+        if (applied_filters.get(FilterPreference.CREATED) == null) {
+
+            Toast.makeText(getContext(), getString(R.string.filter_error_null_created), Toast.LENGTH_SHORT).show();
+            ret = false;
+        }
+
+        return ret;
+    }
+
     @Override
     public void setupDialog(Dialog dialog, int style) {
 
@@ -95,13 +122,17 @@ public class MyFabFragment extends AAH_FabulousFragment {
             @Override
             public void onClick(View v) {
 
-                closeFilter(applied_filters);
-
                 DebugLog.logD(TAG, "apply button clicked : ");
 
-                // preference 저장
-                setStringArrayPref(getContext(), FilterPreference.LANGUAGE, applied_filters.get(FilterPreference.LANGUAGE));
-                setStringArrayPref(getContext(), FilterPreference.CREATED, applied_filters.get(FilterPreference.CREATED));
+                // Apply 조건 체크
+                if (checkApplyCondition()) {
+
+                    closeFilter(applied_filters);
+
+                    // preference 저장
+                    setStringArrayPref(getContext(), FilterPreference.LANGUAGE, applied_filters.get(FilterPreference.LANGUAGE));
+                    setStringArrayPref(getContext(), FilterPreference.CREATED, applied_filters.get(FilterPreference.CREATED));
+                }
             }
         });
 
