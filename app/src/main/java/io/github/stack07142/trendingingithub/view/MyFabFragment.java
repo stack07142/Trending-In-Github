@@ -249,9 +249,24 @@ public class MyFabFragment extends AAH_FabulousFragment {
                         removeFromSelectedMap(filter_category, finalKeys.get(finalI));
                     } else {
 
+                        // Select : Created
                         if (filter_category.equals(FilterPreference.CREATED)) {
 
                             clearPeriodSelected();
+                        }
+
+                        // Select : Language, All
+                        if (filter_category.equals(FilterPreference.LANGUAGE)) {
+
+                            if (finalKeys.get(finalI).equals("All")) {
+
+                                clearLanguageSelected();
+                            } else {
+
+                                languageTVs.get(0).setTag(UNSELECTED);
+                                languageTVs.get(0).setBackgroundResource(R.drawable.chip_unselected);
+                                languageTVs.get(0).setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+                            }
                         }
 
                         DebugLog.logD(TAG, "selected " + tv.getText());
@@ -301,6 +316,21 @@ public class MyFabFragment extends AAH_FabulousFragment {
         if (applied_filters.get(FilterPreference.CREATED) != null) {
 
             applied_filters.get(FilterPreference.CREATED).clear();
+        }
+    }
+
+    private void clearLanguageSelected() {
+
+        for (TextView tv : languageTVs) {
+
+            tv.setTag(UNSELECTED);
+            tv.setBackgroundResource(R.drawable.chip_unselected);
+            tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+        }
+
+        if (applied_filters.get(FilterPreference.LANGUAGE) != null) {
+
+            applied_filters.get(FilterPreference.LANGUAGE).clear();
         }
     }
 
