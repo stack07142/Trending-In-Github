@@ -51,13 +51,13 @@
             android:weightSum="2">
 
             <ImageButton
-                android:id="@+id/imgbtn_refresh"
+                android:id="@+id/imgbtn_edit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/states_fab_button"
-                android:contentDescription="@string/refresh"
-                android:src="@drawable/refresh"
+                android:contentDescription="@string/edit"
+                android:src="@drawable/edit"
                 android:tint="@android:color/white" />
 
             <ImageButton

@@ -3,7 +3,7 @@
     <string name="result_success">Success</string>
     <string name="result_fail">Error in loading data</string>
     <string name="apply">Apply</string>
-    <string name="refresh">Refresh</string>
+    <string name="edit">Edit</string>
     <string name="filter_error_null_lang">You should choose at least one language</string>
     <string name="filter_error_null_created">Please select at least one period</string>
     <string name="filter_error_exceed">You can choose up to three languages</string>

@@ -30,8 +30,6 @@ import static io.github.stack07142.trendingingithub.util.FilterPreference.setStr
 
 public class MyFabFragment extends AAH_FabulousFragment {
 
-    private final String TAG = MyFabFragment.class.getSimpleName();
-
     private final String SELECTED = "selected";
     private final String UNSELECTED = "unselected";
 
@@ -45,8 +43,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
     SectionsPagerAdapter mAdapter;
     ViewPager vp_types;
     TabLayout tabs_types;
-
-    ImageButton imgbtn_refresh;
 
     public static MyFabFragment newInstance() {
 
@@ -97,7 +93,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         tabs_types = (TabLayout) contentView.findViewById(R.id.tabs_types);
 
         LinearLayout ll_buttons = (LinearLayout) contentView.findViewById(R.id.ll_buttons);
-        imgbtn_refresh = (ImageButton) contentView.findViewById(R.id.imgbtn_refresh);
+        ImageButton imgbtn_edit = (ImageButton) contentView.findViewById(R.id.imgbtn_edit);
         ImageButton imgbtn_apply = (ImageButton) contentView.findViewById(R.id.imgbtn_apply);
 
         // Apply 버튼 Click Listener
@@ -118,8 +114,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
             }
         });
 
-        // Refresh 버튼 Click Listener
-        imgbtn_refresh.setOnClickListener(new View.OnClickListener() {
+        // Edit 버튼 Click Listener
+        imgbtn_edit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
