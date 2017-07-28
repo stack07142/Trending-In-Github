@@ -2,11 +2,13 @@ package io.github.stack07142.trendingingithub.view;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 
@@ -50,6 +52,10 @@ public class RepositoryListActivity extends BaseActivityUtil
         super.onCreate(savedInstanceState);
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_repo_list);
+
+        final Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "font/dosis_medium.otf");
+        mBinding.toolbarLayout.setCollapsedTitleTypeface(tf);
+        mBinding.toolbarLayout.setExpandedTitleTypeface(tf);
 
         setupViews();
 
@@ -185,6 +191,18 @@ public class RepositoryListActivity extends BaseActivityUtil
 
             // Query
             repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreference.LANGUAGE), applied_filters.get(FilterPreference.CREATED).get(0));
+
+            // Edited 이후 다시 열기
+            if (FilterPreference.editedFlag) {
+
+                FilterPreference.editedFlag = false;
+
+                MyFabFragment dialogFrag = MyFabFragment.newInstance();
+                dialogFrag.setParentFab(mBinding.fab);
+                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+
+                Toast.makeText(this, getString(R.string.noti_edited), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -14,10 +14,8 @@ public class BaseActivityUtil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Typekit.getInstance()
-                .addNormal(Typekit.createFromAsset(this, "font/cooperhewitt-light.otf"))
-                .addItalic(Typekit.createFromAsset(this, "font/cooperhewitt-lightitalic.otf"))
-                .addBold(Typekit.createFromAsset(this, "font/cooperhewitt-medium.otf"))
-                .addBoldItalic(Typekit.createFromAsset(this, "font/cooperhewitt-mediumitalic.otf"));
+                .addNormal(Typekit.createFromAsset(this, "font/dosis_light.otf"))
+                .addBold(Typekit.createFromAsset(this, "font/dosis_medium.otf"));
     }
 
     @Override

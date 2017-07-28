@@ -12,4 +12,5 @@
     <string name="filter_error_null_created">Please select at least one period</string>
     <string name="filter_error_exceed">You can choose up to three languages</string>
     <string name="no_content">No content to display</string>
+    <string name="noti_edited">Language filter has been modified</string>
 </resources>

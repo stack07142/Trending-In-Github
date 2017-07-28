@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class FilterPreference {
 
+    public static boolean editedFlag = false;
+
     public static final String LANGUAGE = "Language";
     public static final String CREATED = "Created";
     public static final String EDITED = "Edited";

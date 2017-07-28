@@ -190,6 +190,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
                                     addToSelectedMap(FilterPreference.LANGUAGE, "All");
                                 }
 
+                                FilterPreference.editedFlag = true;
+
                                 closeFilter(applied_filters);
                             }
                         }).create().show();
