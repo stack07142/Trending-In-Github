@@ -372,19 +372,13 @@ public class FilterData {
     }
 
     public List<String> getLanguageList() {
+
         return languageList;
     }
 
-    public void setLanguageList(List<String> languageList) {
-        this.languageList = languageList;
-    }
-
     public List<String> getCreatedList() {
-        return createdList;
-    }
 
-    public void setCreatedList(List<String> createdList) {
-        this.createdList = createdList;
+        return createdList;
     }
 
     public int getLanguageListSize() {

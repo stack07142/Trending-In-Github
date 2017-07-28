@@ -7,13 +7,13 @@
 
     <application
         android:name=".model.NewGitHubRepoApplication"
-        tools:replace="android:supportsRtl"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:supportsRtl">
         <activity
             android:name=".view.RepositoryListActivity"
             android:label="@string/app_name"
@@ -27,7 +27,7 @@
         </activity>
         <!-- <activity android:name=".NewGitHubRepoApplication"></activity> -->
         <activity android:name=".view.DetailRepositoryActivity" />
-        <activity android:name=".util.BaseActivityUtil"></activity>
+        <activity android:name=".util.BaseActivityUtil" />
     </application>
 
 </manifest>

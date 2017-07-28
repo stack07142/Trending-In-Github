@@ -35,7 +35,6 @@ public class RepositoryListActivity extends BaseActivityUtil
     // FAB
     FilterData filterData;
     ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
-    ArrayList<String> edited_filters = new ArrayList<>();
 
     // Data Binding
     private ActivityRepoListBinding mBinding;
@@ -78,9 +77,6 @@ public class RepositoryListActivity extends BaseActivityUtil
         // FAB - Applied Languages
         applied_filters.put(FilterPreference.LANGUAGE, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.LANGUAGE));
         applied_filters.put(FilterPreference.CREATED, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.CREATED));
-
-        // FAB - Edited Languages
-        edited_filters = FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.EDITED);
 
         // 최초 Query
         repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreference.LANGUAGE), applied_filters.get(FilterPreference.CREATED).get(0));

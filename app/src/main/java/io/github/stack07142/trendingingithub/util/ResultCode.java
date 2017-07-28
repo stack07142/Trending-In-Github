@@ -12,7 +12,7 @@ public class ResultCode {
     public static final int SUCCESS = 0;
     public static final int FAIL = 1;
 
-    // Declare the @IntDef for these contants
+    // Declare the @IntDef for these contant
     @IntDef({SUCCESS, FAIL})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Result {

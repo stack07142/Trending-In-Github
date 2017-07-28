@@ -64,49 +64,53 @@ public class FilterPreference {
         // 최초 실행 시 preference에 저장된 것이 없는 경우
         else {
 
-            if (key.equals(LANGUAGE)) {
+            switch (key) {
+                case LANGUAGE:
 
-                urls.add("All");
-                setStringArrayPref(context, LANGUAGE, urls);
-            } else if (key.equals(CREATED)) {
+                    urls.add("All");
+                    setStringArrayPref(context, LANGUAGE, urls);
+                    break;
+                case CREATED:
 
-                urls.add("this week");
-                setStringArrayPref(context, CREATED, urls);
-            } else if (key.equals(EDITED)) {
+                    urls.add("this week");
+                    setStringArrayPref(context, CREATED, urls);
+                    break;
+                case EDITED:
 
-                urls.add("All");
-                urls.add("Python");
-                urls.add("Java");
-                urls.add("C++");
-                urls.add("C#");
-                urls.add("C");
-                urls.add("JavaScript");
-                urls.add("Ruby");
-                urls.add("PHP");
-                urls.add("Haskell");
-                urls.add("Go");
-                urls.add("Scala");
-                urls.add("Swift");
-                urls.add("Kotlin");
-                urls.add("Perl");
-                urls.add("Objective-C");
-                urls.add("R");
-                urls.add("Visual Basic");
-                urls.add("Lua");
-                urls.add("Clojure");
-                urls.add("TypeScript");
-                urls.add("Rust");
-                urls.add("Tcl");
-                urls.add("CoffeeScript");
-                urls.add("Elixir");
-                urls.add("Julia");
-                urls.add("Crystal");
-                urls.add("PowerShell");
-                urls.add("Groovy");
-                urls.add("CSS");
-                urls.add("Shell");
-                urls.add("Matlab");
-                setStringArrayPref(context, EDITED, urls);
+                    urls.add("All");
+                    urls.add("Python");
+                    urls.add("Java");
+                    urls.add("C++");
+                    urls.add("C#");
+                    urls.add("C");
+                    urls.add("JavaScript");
+                    urls.add("Ruby");
+                    urls.add("PHP");
+                    urls.add("Haskell");
+                    urls.add("Go");
+                    urls.add("Scala");
+                    urls.add("Swift");
+                    urls.add("Kotlin");
+                    urls.add("Perl");
+                    urls.add("Objective-C");
+                    urls.add("R");
+                    urls.add("Visual Basic");
+                    urls.add("Lua");
+                    urls.add("Clojure");
+                    urls.add("TypeScript");
+                    urls.add("Rust");
+                    urls.add("Tcl");
+                    urls.add("CoffeeScript");
+                    urls.add("Elixir");
+                    urls.add("Julia");
+                    urls.add("Crystal");
+                    urls.add("PowerShell");
+                    urls.add("Groovy");
+                    urls.add("CSS");
+                    urls.add("Shell");
+                    urls.add("Matlab");
+                    setStringArrayPref(context, EDITED, urls);
+                    break;
             }
         }
 

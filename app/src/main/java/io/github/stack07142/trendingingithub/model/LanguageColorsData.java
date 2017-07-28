@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class LanguageColorsData {
 
-    private HashMap<String, String> colorMap;
+    private final HashMap<String, String> colorMap;
 
     public LanguageColorsData() {
 

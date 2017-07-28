@@ -1,0 +1,77 @@
+<com.allattentionhere.fabulousfilter.AAH_FilterView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/filtersfab"
+        android:visibility="invisible"
+        tools:ignore="MissingPrefix"
+        tools:visibility="visible">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs_types"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/filters_header"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="scrollable"
+            app:tabPaddingBottom="0dp"
+            app:tabPaddingEnd="-12dp"
+            app:tabPaddingStart="-12dp"
+            app:tabPaddingTop="0dp"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="@color/bg" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_types"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tabs_types"
+            android:layout_marginBottom="56dp"
+            android:layout_marginTop="0dp"
+            android:elevation="-4dp" />
+
+        <!-- 하단 버튼 / Reset, Apply -->
+        <LinearLayout
+            android:id="@+id/ll_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/brown"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <ImageButton
+                android:id="@+id/imgbtn_edit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/states_fab_button"
+                android:contentDescription="@string/edit"
+                android:src="@drawable/edit"
+                android:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/imgbtn_apply"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/states_fab_button"
+                android:contentDescription="@string/apply"
+                android:src="@drawable/done"
+                android:tint="@android:color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</com.allattentionhere.fabulousfilter.AAH_FilterView>

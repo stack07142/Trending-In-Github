@@ -34,7 +34,8 @@
                 android:id="@+id/repo_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:contentDescription="@string/image" />
 
             <TextView
                 android:id="@+id/repo_name"
@@ -79,7 +80,8 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/shape" />
+                android:background="@drawable/shape"
+                android:contentDescription="@string/image" />
 
             <TextView
                 android:id="@+id/repo_language"
@@ -107,6 +109,7 @@
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/repo_language"
+                android:contentDescription="@string/image"
                 android:src="@drawable/ic_star_black_18dp" />
 
             <TextView
@@ -136,6 +139,7 @@
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/repo_star"
+                android:contentDescription="@string/image"
                 android:src="@drawable/fork_icon" />
 
             <TextView
