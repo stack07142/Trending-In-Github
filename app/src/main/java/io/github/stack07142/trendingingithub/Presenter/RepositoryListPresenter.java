@@ -8,6 +8,7 @@ import java.util.Calendar;
 
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
 import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 import rx.Observable;
 import rx.Subscriber;
@@ -18,6 +19,8 @@ import rx.schedulers.Schedulers;
  * interface-UserAction: View -> Presenter (event)
  */
 public class RepositoryListPresenter implements RepositoryListContract.UserAction {
+
+    private final String TAG = RepositoryListPresenter.class.getSimpleName();
 
     // Presenter는 View로 직접 접근하지 않는다. Interface를 통해 접근한다.
     private final RepositoryListContract.View repositoryListView;
@@ -71,7 +74,6 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
 
         // Retrofit을 이용해 서버에 액세스한다
 
-        // Test code
         final int size = languages.size();
 
         final ArrayList<GitHubService.RepositoryItem> retItems = new ArrayList<>();
@@ -104,8 +106,19 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
 
                                 repositoryListView.hideProgress();
 
-                                // GET Repositories -> Recycler View에 표시한다
-                                repositoryListView.showRepositories(retItems);
+                                if (retItems == null || retItems.size() == 0) {
+
+                                    DebugLog.logD(TAG, "retItems is null");
+
+                                    repositoryListView.showEmptyScreen();
+
+                                } else {
+
+                                    DebugLog.logD(TAG, "retItems size = " + retItems.size());
+
+                                    // GET Repositories -> Recycler View에 표시한다
+                                    repositoryListView.showRepositories(retItems);
+                                }
 
                                 repositoryListView.showNoti(ResultCode.SUCCESS);
                             }

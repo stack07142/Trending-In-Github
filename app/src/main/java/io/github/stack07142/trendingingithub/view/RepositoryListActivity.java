@@ -128,7 +128,19 @@ public class RepositoryListActivity extends BaseActivityUtil
     @Override
     public void showRepositories(ArrayList<GitHubService.RepositoryItem> repositories) {
 
+        mBinding.contentLayout.recyclerRepos.setVisibility(View.VISIBLE);
+        mBinding.contentLayout.emptyLayout.setVisibility(View.GONE);
+
         repositoryAdapter.setItemsAndRefresh(repositories);
+    }
+
+    @Override
+    public void showEmptyScreen() {
+
+        DebugLog.logD(TAG, "showEmptyScreen()");
+
+        mBinding.contentLayout.recyclerRepos.setVisibility(View.GONE);
+        mBinding.contentLayout.emptyLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -421,12 +421,15 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
     private void removeFromSelectedMap(String key, String value) {
 
-        if (applied_filters.get(key).size() == 1 && applied_filters.get(key).contains(value)) {
+        if (applied_filters.get(key) != null) {
 
-            applied_filters.remove(key);
-        } else {
+            if (applied_filters.get(key).size() == 1 && applied_filters.get(key).contains(value)) {
 
-            applied_filters.get(key).remove(value);
+                applied_filters.remove(key);
+            } else {
+
+                applied_filters.get(key).remove(value);
+            }
         }
     }
 

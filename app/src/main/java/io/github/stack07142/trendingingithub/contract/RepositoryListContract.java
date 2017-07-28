@@ -23,6 +23,8 @@ public interface RepositoryListContract {
 
         void showRepositories(ArrayList<GitHubService.RepositoryItem> repositories);
 
+        void showEmptyScreen();
+
         void showNoti(@ResultCode.Result int result);
 
         void startDetailActivity(String fullRepositoryName);
