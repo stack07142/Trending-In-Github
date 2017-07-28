@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class FilterPreference {
 
-    // TODO : StringDef
     public static final String LANGUAGE = "Language";
     public static final String CREATED = "Created";
+    public static final String EDITED = "Edited";
 
     public static void setStringArrayPref(Context context, String key, ArrayList<String> values) {
 
@@ -72,6 +72,41 @@ public class FilterPreference {
 
                 urls.add("this week");
                 setStringArrayPref(context, CREATED, urls);
+            } else if (key.equals(EDITED)) {
+
+                urls.add("All");
+                urls.add("Python");
+                urls.add("Java");
+                urls.add("C++");
+                urls.add("C#");
+                urls.add("C");
+                urls.add("JavaScript");
+                urls.add("Ruby");
+                urls.add("PHP");
+                urls.add("Haskell");
+                urls.add("Go");
+                urls.add("Scala");
+                urls.add("Swift");
+                urls.add("Kotlin");
+                urls.add("Perl");
+                urls.add("Objective-C");
+                urls.add("R");
+                urls.add("Visual Basic");
+                urls.add("Lua");
+                urls.add("Clojure");
+                urls.add("TypeScript");
+                urls.add("Rust");
+                urls.add("Tcl");
+                urls.add("CoffeeScript");
+                urls.add("Elixir");
+                urls.add("Julia");
+                urls.add("Crystal");
+                urls.add("PowerShell");
+                urls.add("Groovy");
+                urls.add("CSS");
+                urls.add("Shell");
+                urls.add("Matlab");
+                setStringArrayPref(context, EDITED, urls);
             }
         }
 

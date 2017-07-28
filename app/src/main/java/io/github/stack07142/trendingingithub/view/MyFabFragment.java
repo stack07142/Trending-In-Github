@@ -1,12 +1,14 @@
 package io.github.stack07142.trendingingithub.view;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +25,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.stack07142.trendingingithub.R;
+import io.github.stack07142.trendingingithub.model.FilterData;
+import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.FilterPreference;
 
+import static io.github.stack07142.trendingingithub.R.string.filter_error_null_lang;
 import static io.github.stack07142.trendingingithub.util.FilterPreference.getStringArrayPref;
 import static io.github.stack07142.trendingingithub.util.FilterPreference.setStringArrayPref;
 
 public class MyFabFragment extends AAH_FabulousFragment {
+
+    private final String TAG = MyFabFragment.class.getSimpleName();
+
+    ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
+    ArrayList<String> edited_filters = new ArrayList<>();
 
     private final String SELECTED = "selected";
     private final String UNSELECTED = "unselected";
@@ -36,7 +46,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
     private final int LANG_PAGE = 0;
     private final int PERIOD_PAGE = 1;
 
-    ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
     ArrayList<TextView> languageTVs = new ArrayList<>();
     ArrayList<TextView> periodTVs = new ArrayList<>();
 
@@ -53,34 +62,31 @@ public class MyFabFragment extends AAH_FabulousFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        applied_filters.put(FilterPreference.LANGUAGE, getStringArrayPref(getContext(), FilterPreference.LANGUAGE));
-        applied_filters.put(FilterPreference.CREATED, getStringArrayPref(getContext(), FilterPreference.CREATED));
+        DebugLog.logD(TAG, "onCreate()");
+
+        // preference 불러오기
+        refreshFilters();
+
+        DebugLog.logD(TAG, "edited_filters = " + edited_filters.toString());
+        DebugLog.logD(TAG, "applied_filters = " + applied_filters.get(FilterPreference.LANGUAGE).toString());
     }
 
-    private boolean checkApplyCondition() {
+    private void refreshFilters() {
 
-        boolean ret = true;
+        // preference 불러오기
+        applied_filters = new ArrayMap<>();
 
-        if (applied_filters.get(FilterPreference.LANGUAGE) == null) {
+        applied_filters.put(FilterPreference.LANGUAGE, getStringArrayPref(getContext(), FilterPreference.LANGUAGE));
+        applied_filters.put(FilterPreference.CREATED, getStringArrayPref(getContext(), FilterPreference.CREATED));
 
-            Toast.makeText(getContext(), getString(R.string.filter_error_null_lang), Toast.LENGTH_SHORT).show();
-            ret = false;
-        } else {
+        edited_filters = FilterPreference.getStringArrayPref(getContext(), FilterPreference.EDITED);
+    }
 
-            if (applied_filters.get(FilterPreference.LANGUAGE).size() > 3) {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-                Toast.makeText(getContext(), getString(R.string.filter_error_exceed), Toast.LENGTH_SHORT).show();
-                ret = false;
-            }
-        }
-
-        if (applied_filters.get(FilterPreference.CREATED) == null) {
-
-            Toast.makeText(getContext(), getString(R.string.filter_error_null_created), Toast.LENGTH_SHORT).show();
-            ret = false;
-        }
-
-        return ret;
+        DebugLog.logD(TAG, "onDestory()");
     }
 
     @Override
@@ -114,23 +120,80 @@ public class MyFabFragment extends AAH_FabulousFragment {
             }
         });
 
-        // Edit 버튼 Click Listener
+        // Edit 버튼 Click Listener - Language Customize
         imgbtn_edit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                for (TextView tv : languageTVs) {
+                // Language Data
+                FilterData filterData = new FilterData();
 
-                    tv.setTag(UNSELECTED);
-                    tv.setBackgroundResource(R.drawable.chip_unselected);
-                    tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+                String[] items = new String[filterData.getLanguageListSize() - 1];
+                List<String> editableLanguageList = filterData.getLanguageList();
+                editableLanguageList.remove(0); // Remove "All", All은 Filter에서 제거되지 않도록 한다
+                items = editableLanguageList.toArray(items);
+
+                final String[] finalItems = items;
+
+                // Already Checked Items
+                final boolean[] checkedItems = new boolean[filterData.getLanguageListSize() - 1];
+
+                for (String s : edited_filters) {
+
+                    if (s.equals("All")) continue;
+
+                    checkedItems[filterData.getLanguageIndex(s)] = true;
                 }
 
-                if (applied_filters.get(FilterPreference.LANGUAGE) != null) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                dialog.setTitle(getString(R.string.dialog_title))
+                        .setMultiChoiceItems(items, checkedItems,
+                                new DialogInterface.OnMultiChoiceClickListener() {
 
-                    applied_filters.get(FilterPreference.LANGUAGE).clear();
-                }
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                                        if (isChecked) {
+
+                                            edited_filters.add(finalItems[which]);
+                                        } else {
+
+                                            // edited_filter 제거
+                                            edited_filters.remove(finalItems[which]);
+
+                                            // applied_filter에도 해당되면 제거
+                                            removeFromSelectedMap(FilterPreference.LANGUAGE, finalItems[which]);
+                                        }
+                                    }
+                                })
+                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                refreshFilters();
+                            }
+                        })
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                // Preference 저장
+                                FilterPreference.setStringArrayPref(getContext(), FilterPreference.EDITED, edited_filters);
+                                FilterPreference.setStringArrayPref(getContext(), FilterPreference.LANGUAGE, applied_filters.get(FilterPreference.LANGUAGE));
+
+                                // applied_filter가 0이면 -> "All" Setting
+                                if (applied_filters.get(FilterPreference.LANGUAGE) == null || applied_filters.get(FilterPreference.LANGUAGE).size() == 0) {
+
+                                    addToSelectedMap(FilterPreference.LANGUAGE, "All");
+                                }
+
+                                closeFilter(applied_filters);
+                            }
+                        }).create().show();
+
             }
         });
 
@@ -219,7 +282,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
             case FilterPreference.LANGUAGE:
 
-                keys = ((RepositoryListActivity) getActivity()).filterData.getLanguageList();
+                // keys = ((RepositoryListActivity) getActivity()).filterData.getLanguageList();
+                keys = edited_filters;
                 break;
 
             case FilterPreference.CREATED:
@@ -245,6 +309,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 @Override
                 public void onClick(View v) {
 
+                    // 선택하여 비활성화 하는 경우
                     if (tv.getTag() != null && tv.getTag().equals(SELECTED)) {
 
                         tv.setTag(UNSELECTED);
@@ -252,15 +317,17 @@ public class MyFabFragment extends AAH_FabulousFragment {
                         tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
 
                         removeFromSelectedMap(filter_category, finalKeys.get(finalI));
-                    } else {
+                    }
+                    // 선택하여 활성화 하는 경우
+                    else {
 
-                        // Select : Created
+                        // Created의 임의의 항목을 선택하는 경우
                         if (filter_category.equals(FilterPreference.CREATED)) {
 
                             clearPeriodSelected();
                         }
 
-                        // Select : Language, All
+                        // Language의 임의의 항목을 선택하는 경우
                         if (filter_category.equals(FilterPreference.LANGUAGE)) {
 
                             if (finalKeys.get(finalI).equals("All")) {
@@ -271,6 +338,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
                                 languageTVs.get(0).setTag(UNSELECTED);
                                 languageTVs.get(0).setBackgroundResource(R.drawable.chip_unselected);
                                 languageTVs.get(0).setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+
+                                removeFromSelectedMap(filter_category, "All");
                             }
                         }
 
@@ -352,12 +421,38 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
     private void removeFromSelectedMap(String key, String value) {
 
-        if (applied_filters.get(key).size() == 1) {
+        if (applied_filters.get(key).size() == 1 && applied_filters.get(key).contains(value)) {
 
             applied_filters.remove(key);
         } else {
 
             applied_filters.get(key).remove(value);
         }
+    }
+
+    private boolean checkApplyCondition() {
+
+        boolean ret = true;
+
+        if (applied_filters.get(FilterPreference.LANGUAGE) == null) {
+
+            Toast.makeText(getContext(), getString(filter_error_null_lang), Toast.LENGTH_SHORT).show();
+            ret = false;
+        } else {
+
+            if (applied_filters.get(FilterPreference.LANGUAGE).size() > 3) {
+
+                Toast.makeText(getContext(), getString(R.string.filter_error_exceed), Toast.LENGTH_SHORT).show();
+                ret = false;
+            }
+        }
+
+        if (applied_filters.get(FilterPreference.CREATED) == null) {
+
+            Toast.makeText(getContext(), getString(R.string.filter_error_null_created), Toast.LENGTH_SHORT).show();
+            ret = false;
+        }
+
+        return ret;
     }
 }

@@ -386,4 +386,14 @@ public class FilterData {
     public void setCreatedList(List<String> createdList) {
         this.createdList = createdList;
     }
+
+    public int getLanguageListSize() {
+
+        return languageList.size();
+    }
+
+    public int getLanguageIndex(String s) {
+
+        return languageList.indexOf(s);
+    }
 }
