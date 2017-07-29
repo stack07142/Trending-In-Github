@@ -106,6 +106,7 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
 
         mBinding.fullname.setOnClickListener(listener);
         mBinding.ownerImage.setOnClickListener(listener);
+        mBinding.connectUrlBtn.setOnClickListener(listener);
     }
 
     @Override

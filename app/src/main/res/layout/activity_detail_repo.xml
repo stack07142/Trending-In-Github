@@ -96,6 +96,16 @@
                 android:contentDescription="@string/image"
                 android:src="@drawable/ic_call_split_black_18dp" />
 
+            <Button
+                android:id="@+id/connect_url_btn"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/detail"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/link_btn" />
 
         </RelativeLayout>
 

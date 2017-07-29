@@ -13,4 +13,5 @@
     <string name="filter_error_exceed">You can choose up to three languages</string>
     <string name="no_content">No content to display</string>
     <string name="noti_edited">Language filter has been modified</string>
+    <string name="link_btn">Check me out on GitHub</string>
 </resources>

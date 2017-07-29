@@ -86,6 +86,7 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         // 최초 Query
         repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreference.LANGUAGE), applied_filters.get(FilterPreference.CREATED).get(0));
+
     }
 
     /**
