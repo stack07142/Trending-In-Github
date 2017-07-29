@@ -5,14 +5,18 @@
     <item
         android:id="@+id/menu_overflow"
         android:icon="@drawable/ic_more_vert_white_24dp"
-        android:title="Test"
+        android:title="@string/menu"
         app:showAsAction="always">
 
         <menu>
 
             <item
-                android:id="@+id/setting_menu"
-                android:title="Test Menu1" />
+                android:id="@+id/oss_license"
+                android:title="@string/oss_license" />
+
+            <item
+                android:id="@+id/sign_in_out"
+                android:title="@string/SignIn" />
 
         </menu>
 

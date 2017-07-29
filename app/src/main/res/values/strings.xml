@@ -14,4 +14,9 @@
     <string name="no_content">No content to display</string>
     <string name="noti_edited">Language filter has been modified</string>
     <string name="link_btn">Check me out on GitHub</string>
+    <string name="menu">Menu</string>
+    <string name="oss_license">Opensource License</string>
+    <string name="SignIn">Sign In</string>
+    <string name="SignOut">Sign Out</string>
+
 </resources>
