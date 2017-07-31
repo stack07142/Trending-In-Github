@@ -27,11 +27,11 @@ import java.util.List;
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.model.FilterData;
 import io.github.stack07142.trendingingithub.util.DebugLog;
-import io.github.stack07142.trendingingithub.util.FilterPreference;
+import io.github.stack07142.trendingingithub.model.FilterPreferenceData;
 
 import static io.github.stack07142.trendingingithub.R.string.filter_error_null_lang;
-import static io.github.stack07142.trendingingithub.util.FilterPreference.getStringArrayPref;
-import static io.github.stack07142.trendingingithub.util.FilterPreference.setStringArrayPref;
+import static io.github.stack07142.trendingingithub.model.FilterPreferenceData.getStringArrayPref;
+import static io.github.stack07142.trendingingithub.model.FilterPreferenceData.setStringArrayPref;
 
 public class MyFabFragment extends AAH_FabulousFragment {
 
@@ -68,7 +68,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         refreshFilters();
 
         DebugLog.logD(TAG, "edited_filters = " + edited_filters.toString());
-        DebugLog.logD(TAG, "applied_filters = " + applied_filters.get(FilterPreference.LANGUAGE).toString());
+        DebugLog.logD(TAG, "applied_filters = " + applied_filters.get(FilterPreferenceData.LANGUAGE).toString());
     }
 
     private void refreshFilters() {
@@ -76,10 +76,10 @@ public class MyFabFragment extends AAH_FabulousFragment {
         // preference 불러오기
         applied_filters = new ArrayMap<>();
 
-        applied_filters.put(FilterPreference.LANGUAGE, getStringArrayPref(getContext(), FilterPreference.LANGUAGE));
-        applied_filters.put(FilterPreference.CREATED, getStringArrayPref(getContext(), FilterPreference.CREATED));
+        applied_filters.put(FilterPreferenceData.LANGUAGE, getStringArrayPref(getContext(), FilterPreferenceData.LANGUAGE));
+        applied_filters.put(FilterPreferenceData.CREATED, getStringArrayPref(getContext(), FilterPreferenceData.CREATED));
 
-        edited_filters = FilterPreference.getStringArrayPref(getContext(), FilterPreference.EDITED);
+        edited_filters = FilterPreferenceData.getStringArrayPref(getContext(), FilterPreferenceData.EDITED);
     }
 
     @Override
@@ -114,8 +114,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
                     closeFilter(applied_filters);
 
                     // preference 저장
-                    setStringArrayPref(getContext(), FilterPreference.LANGUAGE, applied_filters.get(FilterPreference.LANGUAGE));
-                    setStringArrayPref(getContext(), FilterPreference.CREATED, applied_filters.get(FilterPreference.CREATED));
+                    setStringArrayPref(getContext(), FilterPreferenceData.LANGUAGE, applied_filters.get(FilterPreferenceData.LANGUAGE));
+                    setStringArrayPref(getContext(), FilterPreferenceData.CREATED, applied_filters.get(FilterPreferenceData.CREATED));
                 }
             }
         });
@@ -163,7 +163,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                                             edited_filters.remove(finalItems[which]);
 
                                             // applied_filter에도 해당되면 제거
-                                            removeFromSelectedMap(FilterPreference.LANGUAGE, finalItems[which]);
+                                            removeFromSelectedMap(FilterPreferenceData.LANGUAGE, finalItems[which]);
                                         }
                                     }
                                 })
@@ -181,16 +181,16 @@ public class MyFabFragment extends AAH_FabulousFragment {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 // Preference 저장
-                                FilterPreference.setStringArrayPref(getContext(), FilterPreference.EDITED, edited_filters);
-                                FilterPreference.setStringArrayPref(getContext(), FilterPreference.LANGUAGE, applied_filters.get(FilterPreference.LANGUAGE));
+                                FilterPreferenceData.setStringArrayPref(getContext(), FilterPreferenceData.EDITED, edited_filters);
+                                FilterPreferenceData.setStringArrayPref(getContext(), FilterPreferenceData.LANGUAGE, applied_filters.get(FilterPreferenceData.LANGUAGE));
 
                                 // applied_filter가 0이면 -> "All" Setting
-                                if (applied_filters.get(FilterPreference.LANGUAGE) == null || applied_filters.get(FilterPreference.LANGUAGE).size() == 0) {
+                                if (applied_filters.get(FilterPreferenceData.LANGUAGE) == null || applied_filters.get(FilterPreferenceData.LANGUAGE).size() == 0) {
 
-                                    addToSelectedMap(FilterPreference.LANGUAGE, "All");
+                                    addToSelectedMap(FilterPreferenceData.LANGUAGE, "All");
                                 }
 
-                                FilterPreference.editedFlag = true;
+                                FilterPreferenceData.editedFlag = true;
 
                                 closeFilter(applied_filters);
                             }
@@ -231,11 +231,11 @@ public class MyFabFragment extends AAH_FabulousFragment {
             switch (position) {
 
                 case LANG_PAGE:
-                    inflateLayoutWithFilters(FilterPreference.LANGUAGE, fbl);
+                    inflateLayoutWithFilters(FilterPreferenceData.LANGUAGE, fbl);
                     break;
 
                 case PERIOD_PAGE:
-                    inflateLayoutWithFilters(FilterPreference.CREATED, fbl);
+                    inflateLayoutWithFilters(FilterPreferenceData.CREATED, fbl);
                     break;
             }
 
@@ -259,10 +259,10 @@ public class MyFabFragment extends AAH_FabulousFragment {
             switch (position) {
 
                 case 0:
-                    return FilterPreference.LANGUAGE;
+                    return FilterPreferenceData.LANGUAGE;
 
                 case 1:
-                    return FilterPreference.CREATED;
+                    return FilterPreferenceData.CREATED;
 
             }
 
@@ -282,13 +282,13 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
         switch (filter_category) {
 
-            case FilterPreference.LANGUAGE:
+            case FilterPreferenceData.LANGUAGE:
 
                 // keys = ((RepositoryListActivity) getActivity()).filterData.getLanguageList();
                 keys = edited_filters;
                 break;
 
-            case FilterPreference.CREATED:
+            case FilterPreferenceData.CREATED:
 
                 keys = ((RepositoryListActivity) getActivity()).filterData.getCreatedList();
                 break;
@@ -324,13 +324,13 @@ public class MyFabFragment extends AAH_FabulousFragment {
                     else {
 
                         // Created의 임의의 항목을 선택하는 경우
-                        if (filter_category.equals(FilterPreference.CREATED)) {
+                        if (filter_category.equals(FilterPreferenceData.CREATED)) {
 
                             clearPeriodSelected();
                         }
 
                         // Language의 임의의 항목을 선택하는 경우
-                        if (filter_category.equals(FilterPreference.LANGUAGE)) {
+                        if (filter_category.equals(FilterPreferenceData.LANGUAGE)) {
 
                             if (finalKeys.get(finalI).equals("All")) {
 
@@ -366,7 +366,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
             }
 
-            if (filter_category.equals(FilterPreference.LANGUAGE)) {
+            if (filter_category.equals(FilterPreferenceData.LANGUAGE)) {
 
                 languageTVs.add(tv);
             } else {
@@ -387,9 +387,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
             tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
         }
 
-        if (applied_filters.get(FilterPreference.CREATED) != null) {
+        if (applied_filters.get(FilterPreferenceData.CREATED) != null) {
 
-            applied_filters.get(FilterPreference.CREATED).clear();
+            applied_filters.get(FilterPreferenceData.CREATED).clear();
         }
     }
 
@@ -402,9 +402,9 @@ public class MyFabFragment extends AAH_FabulousFragment {
             tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
         }
 
-        if (applied_filters.get(FilterPreference.LANGUAGE) != null) {
+        if (applied_filters.get(FilterPreferenceData.LANGUAGE) != null) {
 
-            applied_filters.get(FilterPreference.LANGUAGE).clear();
+            applied_filters.get(FilterPreferenceData.LANGUAGE).clear();
         }
     }
 
@@ -439,20 +439,20 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
         boolean ret = true;
 
-        if (applied_filters.get(FilterPreference.LANGUAGE) == null) {
+        if (applied_filters.get(FilterPreferenceData.LANGUAGE) == null) {
 
             Toast.makeText(getContext(), getString(filter_error_null_lang), Toast.LENGTH_SHORT).show();
             ret = false;
         } else {
 
-            if (applied_filters.get(FilterPreference.LANGUAGE).size() > 3) {
+            if (applied_filters.get(FilterPreferenceData.LANGUAGE).size() > 3) {
 
                 Toast.makeText(getContext(), getString(R.string.filter_error_exceed), Toast.LENGTH_SHORT).show();
                 ret = false;
             }
         }
 
-        if (applied_filters.get(FilterPreference.CREATED) == null) {
+        if (applied_filters.get(FilterPreferenceData.CREATED) == null) {
 
             Toast.makeText(getContext(), getString(R.string.filter_error_null_created), Toast.LENGTH_SHORT).show();
             ret = false;

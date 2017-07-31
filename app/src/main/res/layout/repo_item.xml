@@ -8,7 +8,7 @@
 
         <variable
             name="repository"
-            type="io.github.stack07142.trendingingithub.model.GitHubService.RepositoryItem" />
+            type="io.github.stack07142.trendingingithub.model.GitHubRepoService.RepositoryItem" />
 
     </data>
 

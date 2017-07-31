@@ -30,6 +30,16 @@
             android:name=".view.DetailRepositoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".util.BaseActivityUtil" />
+        <activity android:name=".model.GitHubSignInService">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="stack07142" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

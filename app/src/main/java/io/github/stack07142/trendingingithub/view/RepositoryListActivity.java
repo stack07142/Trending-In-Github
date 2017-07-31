@@ -1,6 +1,7 @@
 package io.github.stack07142.trendingingithub.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,11 +22,12 @@ import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
 import io.github.stack07142.trendingingithub.databinding.ActivityRepoListBinding;
 import io.github.stack07142.trendingingithub.model.FilterData;
-import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.FilterPreferenceData;
+import io.github.stack07142.trendingingithub.model.GitHubRepoService;
+import io.github.stack07142.trendingingithub.model.GitHubSignInService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 import io.github.stack07142.trendingingithub.util.DebugLog;
-import io.github.stack07142.trendingingithub.util.FilterPreference;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
 // Github branch - githubAuth
@@ -63,11 +65,11 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         setupViews();
 
-        // GitHubService 인스턴스 생성
-        final GitHubService gitHubService = ((NewGitHubRepoApplication) getApplication()).getGitHubService();
+        // GitHubRepoService 인스턴스 생성
+        final GitHubRepoService gitHubRepoService = ((NewGitHubRepoApplication) getApplication()).getGitHubRepoService();
 
         // Presenter의 인스턴스 생성
-        repositoryListPresenter = new RepositoryListPresenter((RepositoryListContract.View) this, gitHubService);
+        repositoryListPresenter = new RepositoryListPresenter((RepositoryListContract.View) this, gitHubRepoService);
 
         // FAB Listener
         mBinding.fab.setOnClickListener(new View.OnClickListener() {
@@ -85,11 +87,11 @@ public class RepositoryListActivity extends BaseActivityUtil
         filterData = new FilterData();
 
         // FAB - Applied Languages
-        applied_filters.put(FilterPreference.LANGUAGE, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.LANGUAGE));
-        applied_filters.put(FilterPreference.CREATED, FilterPreference.getStringArrayPref(getApplicationContext(), FilterPreference.CREATED));
+        applied_filters.put(FilterPreferenceData.LANGUAGE, FilterPreferenceData.getStringArrayPref(getApplicationContext(), FilterPreferenceData.LANGUAGE));
+        applied_filters.put(FilterPreferenceData.CREATED, FilterPreferenceData.getStringArrayPref(getApplicationContext(), FilterPreferenceData.CREATED));
 
         // 최초 Query
-        repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreference.LANGUAGE), applied_filters.get(FilterPreference.CREATED).get(0));
+        repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreferenceData.LANGUAGE), applied_filters.get(FilterPreferenceData.CREATED).get(0));
     }
 
     /**
@@ -113,6 +115,11 @@ public class RepositoryListActivity extends BaseActivityUtil
                 return true;
 
             case R.id.sign_in_out:
+
+                Intent intent = new Intent(this, GitHubSignInService.class);
+                intent.putExtra(ResultCode.REQUEST_CODE, ResultCode.REQUEST_GITHUB_SIGNIN);
+
+                startActivityForResult(intent, ResultCode.REQUEST_GITHUB_SIGNIN);
 
                 return true;
 
@@ -141,7 +148,7 @@ public class RepositoryListActivity extends BaseActivityUtil
      * Repo Item이 클릭되면 상세 화면으로 이동한다
      */
     @Override
-    public void onRepositoryItemClick(GitHubService.RepositoryItem item) {
+    public void onRepositoryItemClick(GitHubRepoService.RepositoryItem item) {
 
         // Presenter에 Event 발생을 통지한다
         repositoryListPresenter.selectRepositoryItem(item);
@@ -165,7 +172,7 @@ public class RepositoryListActivity extends BaseActivityUtil
     }
 
     @Override
-    public void showRepositories(ArrayList<GitHubService.RepositoryItem> repositories) {
+    public void showRepositories(ArrayList<GitHubRepoService.RepositoryItem> repositories) {
 
         mBinding.contentLayout.recyclerRepos.setVisibility(View.VISIBLE);
         mBinding.contentLayout.emptyLayout.setVisibility(View.GONE);
@@ -223,12 +230,12 @@ public class RepositoryListActivity extends BaseActivityUtil
             applied_filters = (ArrayMap<String, ArrayList<String>>) result;
 
             // Query
-            repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreference.LANGUAGE), applied_filters.get(FilterPreference.CREATED).get(0));
+            repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreferenceData.LANGUAGE), applied_filters.get(FilterPreferenceData.CREATED).get(0));
 
             // Edited 이후 다시 열기
-            if (FilterPreference.editedFlag) {
+            if (FilterPreferenceData.editedFlag) {
 
-                FilterPreference.editedFlag = false;
+                FilterPreferenceData.editedFlag = false;
 
                 MyFabFragment dialogFrag = MyFabFragment.newInstance();
                 dialogFrag.setParentFab(mBinding.fab);

@@ -1,6 +1,6 @@
 package io.github.stack07142.trendingingithub.contract;
 
-import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
 public interface DetailRepositoryContract {
@@ -21,7 +21,7 @@ public interface DetailRepositoryContract {
 
         void hideLayout();
 
-        void showRepositoryInfo(GitHubService.RepositoryItem response);
+        void showRepositoryInfo(GitHubRepoService.RepositoryItem response);
 
         void startBrowser(String url);
 

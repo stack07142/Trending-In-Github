@@ -18,7 +18,7 @@ import java.util.List;
 
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.databinding.RepoItemBinding;
-import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.model.LanguageColorsData;
 
 class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewHolder> {
@@ -26,7 +26,7 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
     private final Context context;
     private final OnRepoItemClickListener onRepoItemClickListener;
 
-    private List<GitHubService.RepositoryItem> items;
+    private List<GitHubRepoService.RepositoryItem> items;
 
     // RepositoryAdapter - Constructor
     RepositoryAdapter(Context context, OnRepoItemClickListener onRepoItemClickListener) {
@@ -38,13 +38,13 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
     /**
      * 리포지토리의 데이터를 설정해서 갱신한다
      */
-    void setItemsAndRefresh(List<GitHubService.RepositoryItem> items) {
+    void setItemsAndRefresh(List<GitHubRepoService.RepositoryItem> items) {
 
         this.items = items;
         notifyDataSetChanged();
     }
 
-    private GitHubService.RepositoryItem getItemAt(int position) {
+    private GitHubRepoService.RepositoryItem getItemAt(int position) {
 
         return items.get(position);
     }
@@ -67,7 +67,7 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
     @Override
     public void onBindViewHolder(final RepoViewHolder holder, int position) {
 
-        final GitHubService.RepositoryItem item = getItemAt(position);
+        final GitHubRepoService.RepositoryItem item = getItemAt(position);
 
         holder.bindItem(item);
         final RepoItemBinding binding = holder.getBinding();
@@ -129,7 +129,7 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
             binding = DataBindingUtil.bind(itemView);
         }
 
-        void bindItem(GitHubService.RepositoryItem item) {
+        void bindItem(GitHubRepoService.RepositoryItem item) {
 
             binding.setRepository(item);
         }
@@ -143,6 +143,6 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
 
     interface OnRepoItemClickListener {
 
-        void onRepositoryItemClick(GitHubService.RepositoryItem item);
+        void onRepositoryItemClick(GitHubRepoService.RepositoryItem item);
     }
 }

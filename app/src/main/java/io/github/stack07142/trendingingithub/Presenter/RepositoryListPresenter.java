@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
-import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 import rx.Observable;
@@ -24,13 +24,13 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
 
     // Presenter는 View로 직접 접근하지 않는다. Interface를 통해 접근한다.
     private final RepositoryListContract.View repositoryListView;
-    private final GitHubService gitHubService;
+    private final GitHubRepoService gitHubRepoService;
 
     // Constructor
-    public RepositoryListPresenter(RepositoryListContract.View repositoryListView, GitHubService gitHubService) {
+    public RepositoryListPresenter(RepositoryListContract.View repositoryListView, GitHubRepoService gitHubRepoService) {
 
         this.repositoryListView = repositoryListView;
-        this.gitHubService = gitHubService;
+        this.gitHubRepoService = gitHubRepoService;
     }
 
     /**
@@ -76,7 +76,7 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
 
         final int size = languages.size();
 
-        final ArrayList<GitHubService.RepositoryItem> retItems = new ArrayList<>();
+        final ArrayList<GitHubRepoService.RepositoryItem> retItems = new ArrayList<>();
 
         for (int i = 0; i < size; i++) {
 
@@ -85,19 +85,19 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
             final int finalI = i;
 
             // 지난 일주일간 만들어지고 언어가 language인 것을 쿼리로 전달한다
-            Observable<GitHubService.Repositories> observable = gitHubService.listRepos("language:" + (language.equals("All") ? "null" : language) + " " + "created:>" + text);
+            Observable<GitHubRepoService.Repositories> observable = gitHubRepoService.listRepos("language:" + (language.equals("All") ? "null" : language) + " " + "created:>" + text);
 
             // 입출력(IO)용 스레드로 통신해 메인스레드로 결과를 받아오게 한다
             observable.subscribeOn(Schedulers.io()).
 
                     observeOn(AndroidSchedulers.mainThread()).
 
-                    subscribe(new Subscriber<GitHubService.Repositories>() {
+                    subscribe(new Subscriber<GitHubRepoService.Repositories>() {
 
                         @Override
-                        public void onNext(GitHubService.Repositories repositories) {
+                        public void onNext(GitHubRepoService.Repositories repositories) {
 
-                            for (GitHubService.RepositoryItem item : repositories.items) {
+                            for (GitHubRepoService.RepositoryItem item : repositories.items) {
 
                                 retItems.add(item);
                             }
@@ -142,7 +142,7 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
     }
 
     @Override
-    public void selectRepositoryItem(GitHubService.RepositoryItem item) {
+    public void selectRepositoryItem(GitHubRepoService.RepositoryItem item) {
 
         repositoryListView.startDetailActivity(item.full_name);
     }

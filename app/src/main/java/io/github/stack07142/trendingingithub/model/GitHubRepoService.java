@@ -10,7 +10,7 @@ import rx.Observable;
 /**
  * Retrofit으로 Github API를 이용하기 위한 클래스
  */
-public interface GitHubService {
+public interface GitHubRepoService {
 
     /**
      * GitHub의 리포지토리 검색 결과를 가져온다
@@ -35,7 +35,7 @@ public interface GitHubService {
      * API 액세스 결과가 이 클래스에 들어온다
      * GitHub의 리포지토리 목록이 들어와 있다
      *
-     * @see GitHubService#listRepos(String)
+     * @see GitHubRepoService#listRepos(String)
      */
     public static class Repositories {
 
@@ -51,7 +51,7 @@ public interface GitHubService {
      * API 액세스 결과가 이 클래스에 들어온다
      * GitHub의 리포지토리 데이터가 들어와 있다
      *
-     * @see GitHubService#detailRepo(String, String)
+     * @see GitHubRepoService#detailRepo(String, String)
      */
     public static class RepositoryItem {
 
@@ -80,7 +80,7 @@ public interface GitHubService {
     /**
      * GitHub의 리포지토리에 대한 오너의 데이터가 들어와 있다
      *
-     * @see GitHubService#detailRepo(String, String)
+     * @see GitHubRepoService#detailRepo(String, String)
      */
     public static class Owner {
         public final String received_events_url;

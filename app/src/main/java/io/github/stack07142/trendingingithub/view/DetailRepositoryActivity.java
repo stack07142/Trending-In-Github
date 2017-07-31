@@ -18,7 +18,7 @@ import io.github.stack07142.trendingingithub.Presenter.DetailRepositoryPresenter
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.contract.DetailRepositoryContract;
 import io.github.stack07142.trendingingithub.databinding.ActivityDetailRepoBinding;
-import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 import io.github.stack07142.trendingingithub.util.ResultCode;
@@ -57,9 +57,9 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
         final Intent intent = getIntent();
         fullRepositoryName = intent.getStringExtra(EXTRA_FULL_REPOSITORY_NAME);
 
-        final GitHubService gitHubService = ((NewGitHubRepoApplication) getApplication()).getGitHubService();
+        final GitHubRepoService gitHubRepoService = ((NewGitHubRepoApplication) getApplication()).getGitHubRepoService();
 
-        detailPresenter = new DetailRepositoryPresenter((DetailRepositoryContract.View) this, gitHubService);
+        detailPresenter = new DetailRepositoryPresenter((DetailRepositoryContract.View) this, gitHubRepoService);
         detailPresenter.prepare();
     }
 
@@ -74,7 +74,7 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
     }
 
     @Override
-    public void showRepositoryInfo(GitHubService.RepositoryItem response) {
+    public void showRepositoryInfo(GitHubRepoService.RepositoryItem response) {
 
         mBinding.fullname.setText(response.full_name);
         mBinding.detail.setText(response.description);

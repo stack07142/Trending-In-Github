@@ -2,7 +2,7 @@ package io.github.stack07142.trendingingithub.contract;
 
 import java.util.ArrayList;
 
-import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
 /**
@@ -21,7 +21,7 @@ public interface RepositoryListContract {
 
         void hideProgress();
 
-        void showRepositories(ArrayList<GitHubService.RepositoryItem> repositories);
+        void showRepositories(ArrayList<GitHubRepoService.RepositoryItem> repositories);
 
         void showEmptyScreen();
 
@@ -38,7 +38,7 @@ public interface RepositoryListContract {
 
         void selectLanguage(ArrayList<String> languages, String period);
 
-        void selectRepositoryItem(GitHubService.RepositoryItem item);
+        void selectRepositoryItem(GitHubRepoService.RepositoryItem item);
 
     }
 }

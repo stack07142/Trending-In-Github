@@ -1,7 +1,7 @@
 package io.github.stack07142.trendingingithub.Presenter;
 
 import io.github.stack07142.trendingingithub.contract.DetailRepositoryContract;
-import io.github.stack07142.trendingingithub.model.GitHubService;
+import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -12,14 +12,14 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
     // View에 직접 접근하지 않는다. interface를 통한 접근.
     private final DetailRepositoryContract.View detailView;
 
-    private final GitHubService gitHubService;
-    private GitHubService.RepositoryItem repositoryItem;
+    private final GitHubRepoService gitHubRepoService;
+    private GitHubRepoService.RepositoryItem repositoryItem;
 
     // Constructor
-    public DetailRepositoryPresenter(DetailRepositoryContract.View detailView, GitHubService gitHubService) {
+    public DetailRepositoryPresenter(DetailRepositoryContract.View detailView, GitHubRepoService gitHubRepoService) {
 
         this.detailView = detailView;
-        this.gitHubService = gitHubService;
+        this.gitHubRepoService = gitHubRepoService;
     }
 
     /**
@@ -61,12 +61,12 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
         final String owner = repoData[0];
         final String repoName = repoData[1];
 
-        gitHubService.detailRepo(owner, repoName)
+        gitHubRepoService.detailRepo(owner, repoName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<GitHubService.RepositoryItem>() {
+                .subscribe(new Action1<GitHubRepoService.RepositoryItem>() {
                     @Override
-                    public void call(GitHubService.RepositoryItem response) {
+                    public void call(GitHubRepoService.RepositoryItem response) {
 
                         repositoryItem = response;
 

@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NewGitHubRepoApplication extends Application {
 
     Retrofit retrofit;
-    private GitHubService gitHubService;
+    private GitHubRepoService gitHubRepoService;
 
     @Override
     public void onCreate() {
@@ -44,11 +44,11 @@ public class NewGitHubRepoApplication extends Application {
                 .client(client)
                 .build();
 
-        gitHubService = retrofit.create(GitHubService.class);
+        gitHubRepoService = retrofit.create(GitHubRepoService.class);
     }
 
-    public GitHubService getGitHubService() {
+    public GitHubRepoService getGitHubRepoService() {
 
-        return gitHubService;
+        return gitHubRepoService;
     }
 }

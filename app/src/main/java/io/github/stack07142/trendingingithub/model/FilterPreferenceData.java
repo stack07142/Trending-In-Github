@@ -1,4 +1,4 @@
-package io.github.stack07142.trendingingithub.util;
+package io.github.stack07142.trendingingithub.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +9,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class FilterPreference {
+public class FilterPreferenceData {
 
     public static boolean editedFlag = false;
 
