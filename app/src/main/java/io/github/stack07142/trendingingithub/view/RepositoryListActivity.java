@@ -28,6 +28,8 @@ import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.FilterPreference;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
+// Github branch - githubAuth
+
 /**
  * interface-View: Presenter -> View 조작
  */
