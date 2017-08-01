@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -24,7 +27,7 @@ import io.github.stack07142.trendingingithub.databinding.ActivityRepoListBinding
 import io.github.stack07142.trendingingithub.model.FilterData;
 import io.github.stack07142.trendingingithub.model.FilterPreferenceData;
 import io.github.stack07142.trendingingithub.model.GitHubRepoService;
-import io.github.stack07142.trendingingithub.model.GitHubSignInService;
+import io.github.stack07142.trendingingithub.model.GitHubSignInOutService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 import io.github.stack07142.trendingingithub.util.DebugLog;
@@ -39,6 +42,11 @@ public class RepositoryListActivity extends BaseActivityUtil
         implements RepositoryAdapter.OnRepoItemClickListener, RepositoryListContract.View, AAH_FabulousFragment.Callbacks {
 
     private static final String TAG = RepositoryListActivity.class.getSimpleName();
+
+    // Firebase Auth - GitHub
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    FirebaseUser mUser;
 
     // FAB
     FilterData filterData;
@@ -65,6 +73,20 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         setupViews();
 
+        mAuth = FirebaseAuth.getInstance();
+
+        // Firebase Auth Listener
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                mUser = firebaseAuth.getCurrentUser();
+
+                invalidateOptionsMenu();
+            }
+        }; // ~mAuthListener
+
         // GitHubRepoService 인스턴스 생성
         final GitHubRepoService gitHubRepoService = ((NewGitHubRepoApplication) getApplication()).getGitHubRepoService();
 
@@ -83,14 +105,14 @@ public class RepositoryListActivity extends BaseActivityUtil
             }
         });
 
-        // FAB
+        // FAB - FilterData
         filterData = new FilterData();
 
         // FAB - Applied Languages
         applied_filters.put(FilterPreferenceData.LANGUAGE, FilterPreferenceData.getStringArrayPref(getApplicationContext(), FilterPreferenceData.LANGUAGE));
         applied_filters.put(FilterPreferenceData.CREATED, FilterPreferenceData.getStringArrayPref(getApplicationContext(), FilterPreferenceData.CREATED));
 
-        // 최초 Query
+        // 최초 Repo Query
         repositoryListPresenter.selectLanguage(applied_filters.get(FilterPreferenceData.LANGUAGE), applied_filters.get(FilterPreferenceData.CREATED).get(0));
     }
 
@@ -103,6 +125,19 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         getMenuInflater().inflate(R.menu.menu, menu);
 
+        // User is signed In
+        if (mUser != null) {
+
+            menu.findItem(R.id.sign_in).setVisible(false);
+            menu.findItem(R.id.sign_out).setVisible(true);
+        }
+        // User is signed Out
+        else {
+
+            menu.findItem(R.id.sign_in).setVisible(true);
+            menu.findItem(R.id.sign_out).setVisible(false);
+        }
+
         return true;
     }
 
@@ -114,12 +149,15 @@ public class RepositoryListActivity extends BaseActivityUtil
             case R.id.oss_license:
                 return true;
 
-            case R.id.sign_in_out:
+            case R.id.sign_in:
 
-                Intent intent = new Intent(this, GitHubSignInService.class);
-                intent.putExtra(ResultCode.REQUEST_CODE, ResultCode.REQUEST_GITHUB_SIGNIN);
+                repositoryListPresenter.selectSignInMenu();
 
-                startActivityForResult(intent, ResultCode.REQUEST_GITHUB_SIGNIN);
+                return true;
+
+            case R.id.sign_out:
+
+                repositoryListPresenter.selectSignOutMenu();
 
                 return true;
 
@@ -243,6 +281,49 @@ public class RepositoryListActivity extends BaseActivityUtil
 
                 Toast.makeText(this, getString(R.string.noti_edited), Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        mAuth.removeAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void startSignInOutService(@ResultCode.Result int requestCode) {
+
+        if (requestCode == ResultCode.REQUEST_GITHUB_SIGNIN) {
+
+            Intent signInIntent = new Intent(this, GitHubSignInOutService.class);
+            signInIntent.putExtra(ResultCode.REQUEST_CODE, ResultCode.REQUEST_GITHUB_SIGNIN);
+
+            startActivityForResult(signInIntent, ResultCode.REQUEST_GITHUB_SIGNIN);
+        } else if (requestCode == ResultCode.REQUEST_GITHUB_SIGNOUT) {
+
+            Intent signOutIntent = new Intent(this, GitHubSignInOutService.class);
+            signOutIntent.putExtra(ResultCode.REQUEST_CODE, ResultCode.REQUEST_GITHUB_SIGNOUT);
+
+            startActivityForResult(signOutIntent, ResultCode.REQUEST_GITHUB_SIGNOUT);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ResultCode.REQUEST_GITHUB_SIGNIN
+                || requestCode == ResultCode.REQUEST_GITHUB_SIGNOUT) {
+
+            hideProgress();
         }
     }
 }

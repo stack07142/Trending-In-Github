@@ -28,6 +28,8 @@ public interface RepositoryListContract {
         void showNoti(@ResultCode.Result int result);
 
         void startDetailActivity(String fullRepositoryName);
+
+        void startSignInOutService(@ResultCode.Result int requestCode);
     }
 
     /**
@@ -40,5 +42,12 @@ public interface RepositoryListContract {
 
         void selectRepositoryItem(GitHubRepoService.RepositoryItem item);
 
+        void selectSignInMenu();
+
+        void selectSignOutMenu();
+
+        void selectStar();
+
+        void unselectStar();
     }
 }

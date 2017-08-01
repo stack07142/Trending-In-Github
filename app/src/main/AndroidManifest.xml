@@ -30,7 +30,10 @@
             android:name=".view.DetailRepositoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".util.BaseActivityUtil" />
-        <activity android:name=".model.GitHubSignInService">
+        <activity
+            android:name=".model.GitHubSignInOutService"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

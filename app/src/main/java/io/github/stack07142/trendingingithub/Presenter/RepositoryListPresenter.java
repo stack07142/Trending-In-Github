@@ -138,12 +138,35 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
                         }
                     });
         }
-
     }
 
     @Override
     public void selectRepositoryItem(GitHubRepoService.RepositoryItem item) {
 
         repositoryListView.startDetailActivity(item.full_name);
+    }
+
+    @Override
+    public void selectSignInMenu() {
+
+        repositoryListView.showProgress();
+        repositoryListView.startSignInOutService(ResultCode.REQUEST_GITHUB_SIGNIN);
+    }
+
+    @Override
+    public void selectSignOutMenu() {
+
+        repositoryListView.showProgress();
+        repositoryListView.startSignInOutService(ResultCode.REQUEST_GITHUB_SIGNOUT);
+    }
+
+    @Override
+    public void selectStar() {
+
+    }
+
+    @Override
+    public void unselectStar() {
+
     }
 }

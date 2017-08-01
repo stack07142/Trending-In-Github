@@ -16,6 +16,7 @@ public class ResultCode {
     public static final int NONE = 2000;
     public static final int REQUEST_GITHUB_SIGNIN = 1000;
     public static final int REQUEST_GITHUB_SIGNOUT = 1001;
+    public static final int REQUEST_GITHUB_REDIRECT = 1002;
 
     // Declare the @IntDef for these contant
     @IntDef({SUCCESS, FAIL, NONE, REQUEST_GITHUB_SIGNIN, REQUEST_GITHUB_SIGNOUT})

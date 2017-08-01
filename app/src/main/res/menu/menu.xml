@@ -15,9 +15,12 @@
                 android:title="@string/oss_license" />
 
             <item
-                android:id="@+id/sign_in_out"
+                android:id="@+id/sign_in"
                 android:title="@string/SignIn" />
 
+            <item
+                android:id="@+id/sign_out"
+                android:title="@string/SignOut" />
         </menu>
 
     </item>

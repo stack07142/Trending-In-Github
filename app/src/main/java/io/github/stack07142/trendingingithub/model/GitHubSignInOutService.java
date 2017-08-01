@@ -1,10 +1,10 @@
 package io.github.stack07142.trendingingithub.model;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,7 +13,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GithubAuthProvider;
 
 import java.io.IOException;
@@ -30,46 +29,31 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class GitHubSignInService extends AppCompatActivity {
+public class GitHubSignInOutService extends Activity {
 
-    private final String TAG = GitHubSignInService.class.getSimpleName();
+    private final String TAG = GitHubSignInOutService.class.getSimpleName();
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private final String GITHUB_CLIENT_ID = "3447b7de47287871b562";
     private final String GITHUB_CLIENT_SECRET = "23989ba2dc5b9049ab21984e0c7a8505a68147c9";
-    private final String GITHUB_TOKEN = "b0bbbc8aafad37edd7d7426f53038642a2de8d87";
-    private final String GITHUB_REDIRECT_URL = "stack07142://git.oauth2token";
+    private final String GITHUB_TOKEN = "818ef036620f95c123eb8bdfadd3651a24df906d";
+    private final String GITHUB_REDIRECT_URL = "stack07142://authorization-callback.url";
+
+    /*
+    private final String GITHUB_CLIENT_ID = "Your OAuth Application Client ID";
+    private final String GITHUB_CLIENT_SECRET = "Your OAuth Application Client Secret";
+    private final String GITHUB_TOKEN = "Your Personal access token";
+    private final String GITHUB_REDIRECT_URL = "Your Redirect Url";
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DebugLog.logD(TAG, "onCreate()");
+
         mAuth = FirebaseAuth.getInstance();
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                // User is signed In
-                if (user != null) {
-
-                    DebugLog.logD(TAG, "User is signed In");
-                    Toast.makeText(GitHubSignInService.this, "SUCCESS -> change to Snackbar", Toast.LENGTH_SHORT).show();
-
-                    finish();
-                }
-                // User is signed Out
-                else {
-
-                    DebugLog.logD(TAG, "User is signed Out");
-                }
-            }
-        }; // ~mAuthListener
 
         Bundle bundle = getIntent().getExtras();
         int requestCode = bundle.getInt(ResultCode.REQUEST_CODE, ResultCode.NONE);
@@ -105,7 +89,30 @@ public class GitHubSignInService extends AppCompatActivity {
             DebugLog.logD(TAG, "httpUrl = " + httpUrl.toString());
 
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(httpUrl.toString()));
-            startActivity(intent);
+
+
+            startActivityForResult(intent, ResultCode.REQUEST_GITHUB_REDIRECT);
+
+        } else if (requestCode == ResultCode.REQUEST_GITHUB_SIGNOUT) {
+
+            mAuth.signOut();
+
+            if (mAuth.getCurrentUser() == null) {
+
+                DebugLog.logD(TAG, "User is signed Out");
+
+
+                Toast.makeText(GitHubSignInOutService.this, "SIGN OUT - SUCCESS -> change to Snackbar", Toast.LENGTH_SHORT).show();
+
+                setResult(ResultCode.SUCCESS);
+                finish();
+            } else {
+
+                Toast.makeText(GitHubSignInOutService.this, "signOut 실패?", Toast.LENGTH_SHORT).show();
+
+                setResult(ResultCode.FAIL);
+                finish();
+            }
         }
 
         // Called after the GitHub server redirect us to GITHUB_REDIRECT_URL
@@ -130,6 +137,13 @@ public class GitHubSignInService extends AppCompatActivity {
             }
         }
     } // ~onCreate
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        DebugLog.logD(TAG, "onResume()");
+    }
 
     /**
      * An unguessable random string.
@@ -181,6 +195,7 @@ public class GitHubSignInService extends AppCompatActivity {
                 } else {
 
                     // TODO : Set Result - Error
+
                 }
             }
         });
@@ -202,6 +217,12 @@ public class GitHubSignInService extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             DebugLog.logD(TAG, "signInWithCredential, task-onComplete");
+
+                            // TODO : NOTI
+                            Toast.makeText(GitHubSignInOutService.this, "SIGN IN - SUCCESS -> change to Snackbar", Toast.LENGTH_SHORT).show();
+
+                            setResult(ResultCode.SUCCESS);
+                            finish();
                         } else {
 
                             DebugLog.logD(TAG, "signInWithCredential, getException = ", task.getException());
@@ -219,16 +240,12 @@ public class GitHubSignInService extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        mAuth.addAuthStateListener(mAuthListener);
-    }
+        if (requestCode == ResultCode.REQUEST_GITHUB_REDIRECT) {
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        mAuth.removeAuthStateListener(mAuthListener);
+            finish();
+        }
     }
 }
