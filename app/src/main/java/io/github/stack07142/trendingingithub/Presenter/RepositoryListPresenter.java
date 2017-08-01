@@ -150,14 +150,14 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
     public void selectSignInMenu() {
 
         repositoryListView.showProgress();
-        repositoryListView.startSignInOutService(ResultCode.REQUEST_GITHUB_SIGNIN);
+        repositoryListView.startSignInOutActivity(ResultCode.REQUEST_GITHUB_SIGNIN);
     }
 
     @Override
     public void selectSignOutMenu() {
 
         repositoryListView.showProgress();
-        repositoryListView.startSignInOutService(ResultCode.REQUEST_GITHUB_SIGNOUT);
+        repositoryListView.startSignInOutActivity(ResultCode.REQUEST_GITHUB_SIGNOUT);
     }
 
     @Override
@@ -168,5 +168,12 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
     @Override
     public void unselectStar() {
 
+    }
+
+    @Override
+    public void completeSignInOut(@ResultCode.Result int resultCode) {
+
+        repositoryListView.hideProgress();
+        repositoryListView.showNoti(resultCode);
     }
 }

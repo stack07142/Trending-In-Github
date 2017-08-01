@@ -27,7 +27,6 @@ import io.github.stack07142.trendingingithub.databinding.ActivityRepoListBinding
 import io.github.stack07142.trendingingithub.model.FilterData;
 import io.github.stack07142.trendingingithub.model.FilterPreferenceData;
 import io.github.stack07142.trendingingithub.model.GitHubRepoService;
-import io.github.stack07142.trendingingithub.model.GitHubSignInOutService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 import io.github.stack07142.trendingingithub.util.DebugLog;
@@ -299,17 +298,17 @@ public class RepositoryListActivity extends BaseActivityUtil
     }
 
     @Override
-    public void startSignInOutService(@ResultCode.Result int requestCode) {
+    public void startSignInOutActivity(@ResultCode.Result int requestCode) {
 
         if (requestCode == ResultCode.REQUEST_GITHUB_SIGNIN) {
 
-            Intent signInIntent = new Intent(this, GitHubSignInOutService.class);
+            Intent signInIntent = new Intent(this, SignInOutActivity.class);
             signInIntent.putExtra(ResultCode.REQUEST_CODE, ResultCode.REQUEST_GITHUB_SIGNIN);
 
             startActivityForResult(signInIntent, ResultCode.REQUEST_GITHUB_SIGNIN);
         } else if (requestCode == ResultCode.REQUEST_GITHUB_SIGNOUT) {
 
-            Intent signOutIntent = new Intent(this, GitHubSignInOutService.class);
+            Intent signOutIntent = new Intent(this, SignInOutActivity.class);
             signOutIntent.putExtra(ResultCode.REQUEST_CODE, ResultCode.REQUEST_GITHUB_SIGNOUT);
 
             startActivityForResult(signOutIntent, ResultCode.REQUEST_GITHUB_SIGNOUT);
@@ -323,7 +322,7 @@ public class RepositoryListActivity extends BaseActivityUtil
         if (requestCode == ResultCode.REQUEST_GITHUB_SIGNIN
                 || requestCode == ResultCode.REQUEST_GITHUB_SIGNOUT) {
 
-            hideProgress();
+            repositoryListPresenter.completeSignInOut(resultCode);
         }
     }
 }

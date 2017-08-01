@@ -29,7 +29,7 @@ public interface RepositoryListContract {
 
         void startDetailActivity(String fullRepositoryName);
 
-        void startSignInOutService(@ResultCode.Result int requestCode);
+        void startSignInOutActivity(@ResultCode.Result int requestCode);
     }
 
     /**
@@ -49,5 +49,7 @@ public interface RepositoryListContract {
         void selectStar();
 
         void unselectStar();
+
+        void completeSignInOut(@ResultCode.Result int resultCode);
     }
 }
