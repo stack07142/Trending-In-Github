@@ -20,6 +20,9 @@
     <string name="SignOut">Sign Out</string>
     <string name="github_client_id">3447b7de47287871b562</string>
     <string name="github_client_secret">23989ba2dc5b9049ab21984e0c7a8505a68147c9</string>
-    <string name="github_token">325c924bd8e3d93c8488efbe98de4bef46da7ec5</string>
     <string name="github_redirect_url">stack07142://authorization-callback.url</string>
+    <string name="github_token">dummy data</string>
+    <!--
+        <string name="github_token">325c924bd8e3d93c8488efbe98de4bef46da7ec5</string>
+    -->
 </resources>
