@@ -2,7 +2,6 @@ package io.github.stack07142.trendingingithub.Presenter;
 
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,19 +63,16 @@ public class SignInOutPresenter implements SignInOutContract.UserAction {
         if (gitHubSignInOutService.signOut()) {
 
             signInOutView.setResult(ResultCode.SUCCESS);
-            signInOutView.finishView();
         } else {
 
             signInOutView.setResult(ResultCode.FAIL);
-            signInOutView.finishView();
         }
+
+        signInOutView.finishView();
     }
 
     @Override
-    public void githubRedirect(Uri uri) {
-
-        String code = uri.getQueryParameter("code");
-        String state = uri.getQueryParameter("state");
+    public void githubRedirect(String code, String state) {
 
         if (code != null && state != null) {
 
@@ -95,7 +91,6 @@ public class SignInOutPresenter implements SignInOutContract.UserAction {
             signInOutView.finishView();
         }
     }
-
 
     private void sendPost(String code, String state) {
 
@@ -144,9 +139,8 @@ public class SignInOutPresenter implements SignInOutContract.UserAction {
         });
     }
 
+    // 3. Use the access token to access the API
     private void signInWithToken(String token) {
-
-        final boolean[] ret = new boolean[1];
 
         DebugLog.logD(TAG, "signInWithToken()");
 
@@ -162,12 +156,8 @@ public class SignInOutPresenter implements SignInOutContract.UserAction {
                         if (task.isSuccessful()) {
 
                             signInOutView.setResult(ResultCode.SUCCESS);
-
-                        } else {
-
-                            signInOutView.setResult(ResultCode.FAIL);
+                            signInOutView.finishView();
                         }
-                        signInOutView.finishView();
                     }
                 })
                 .addOnFailureListener(((SignInOutActivity) signInOutView), new OnFailureListener() {

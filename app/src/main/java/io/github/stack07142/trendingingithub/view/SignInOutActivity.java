@@ -2,11 +2,9 @@ package io.github.stack07142.trendingingithub.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import io.github.stack07142.trendingingithub.Presenter.SignInOutPresenter;
-import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.contract.SignInOutContract;
 import io.github.stack07142.trendingingithub.model.GitHubSignInOutService;
 import io.github.stack07142.trendingingithub.util.ResultCode;
@@ -43,22 +41,19 @@ public class SignInOutActivity extends Activity implements SignInOutContract.Vie
             signInOutPresenter.signOut();
         }
 
-        // Called after the GitHub server redirect us to GITHUB_REDIRECT_URL
-        Uri uri = getIntent().getData();
 
-        if (uri != null && uri.toString().startsWith(getString(R.string.github_redirect_url))) {
-
-            signInOutPresenter.githubRedirect(uri);
-        }
     } // ~onCreate
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
-        if (requestCode == ResultCode.REQUEST_GITHUB_REDIRECT) {
+        if (intent != null) {
 
-            finish();
+            String code = intent.getStringExtra("code");
+            String state = intent.getStringExtra("state");
+
+            signInOutPresenter.githubRedirect(code, state);
         }
     }
 

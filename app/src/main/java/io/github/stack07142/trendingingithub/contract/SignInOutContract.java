@@ -1,7 +1,5 @@
 package io.github.stack07142.trendingingithub.contract;
 
-import android.net.Uri;
-
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
 /**
@@ -31,6 +29,6 @@ public interface SignInOutContract {
 
         void signOut();
 
-        void githubRedirect(Uri uri);
+        void githubRedirect(String code, String state);
     }
 }
