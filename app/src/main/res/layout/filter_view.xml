@@ -57,8 +57,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/states_fab_button"
                 android:contentDescription="@string/edit"
-                android:src="@drawable/edit"
-                android:tint="@android:color/white" />
+                android:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_edit" />
 
             <ImageButton
                 android:id="@+id/imgbtn_apply"
@@ -67,8 +67,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/states_fab_button"
                 android:contentDescription="@string/apply"
-                android:src="@drawable/done"
-                android:tint="@android:color/white" />
+                android:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_done" />
 
         </LinearLayout>
 

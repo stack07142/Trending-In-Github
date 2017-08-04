@@ -315,7 +315,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                     if (tv.getTag() != null && tv.getTag().equals(SELECTED)) {
 
                         tv.setTag(UNSELECTED);
-                        tv.setBackgroundResource(R.drawable.chip_unselected);
+                        tv.setBackgroundResource(R.drawable.shape_chip_unselected);
                         tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
 
                         removeFromSelectedMap(filter_category, finalKeys.get(finalI));
@@ -338,7 +338,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                             } else {
 
                                 languageTVs.get(0).setTag(UNSELECTED);
-                                languageTVs.get(0).setBackgroundResource(R.drawable.chip_unselected);
+                                languageTVs.get(0).setBackgroundResource(R.drawable.shape_chip_unselected);
                                 languageTVs.get(0).setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
 
                                 removeFromSelectedMap(filter_category, "All");
@@ -346,7 +346,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
                         }
 
                         tv.setTag(SELECTED);
-                        tv.setBackgroundResource(R.drawable.chip_selected);
+                        tv.setBackgroundResource(R.drawable.shape_chip_selected);
                         tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_header));
 
                         addToSelectedMap(filter_category, finalKeys.get(finalI));
@@ -358,11 +358,11 @@ public class MyFabFragment extends AAH_FabulousFragment {
                     && applied_filters.get(filter_category).contains(keys.get(finalI))) {
 
                 tv.setTag(SELECTED);
-                tv.setBackgroundResource(R.drawable.chip_selected);
+                tv.setBackgroundResource(R.drawable.shape_chip_selected);
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_header));
             } else {
 
-                tv.setBackgroundResource(R.drawable.chip_unselected);
+                tv.setBackgroundResource(R.drawable.shape_chip_unselected);
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
             }
 
@@ -383,7 +383,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         for (TextView tv : periodTVs) {
 
             tv.setTag(UNSELECTED);
-            tv.setBackgroundResource(R.drawable.chip_unselected);
+            tv.setBackgroundResource(R.drawable.shape_chip_unselected);
             tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
         }
 
@@ -398,7 +398,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
         for (TextView tv : languageTVs) {
 
             tv.setTag(UNSELECTED);
-            tv.setBackgroundResource(R.drawable.chip_unselected);
+            tv.setBackgroundResource(R.drawable.shape_chip_unselected);
             tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
         }
 

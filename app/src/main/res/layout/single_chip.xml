@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_margin="8dp"
-        android:background="@drawable/chip_unselected"
+        android:background="@drawable/shape_chip_unselected"
         android:gravity="center"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
