@@ -60,6 +60,9 @@ dependencies {
         exclude group: 'com.android.support'
     }
 
+    // Firebase AdMob
+    compile 'com.google.firebase:firebase-ads:10.0.1'
+
     testCompile 'junit:junit:4.12'
 }
 

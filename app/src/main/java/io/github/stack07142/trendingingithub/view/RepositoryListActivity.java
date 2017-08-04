@@ -4,7 +4,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,8 +13,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -31,8 +28,6 @@ import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
-// Github branch - githubAuth
-
 /**
  * interface-View: Presenter -> View 조작
  */
@@ -40,11 +35,6 @@ public class RepositoryListActivity extends BaseActivityUtil
         implements RepositoryAdapter.OnRepoItemClickListener, RepositoryListContract.View, AAH_FabulousFragment.Callbacks {
 
     private static final String TAG = RepositoryListActivity.class.getSimpleName();
-
-    // Firebase Auth - GitHub
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    FirebaseUser mUser;
 
     // FAB
     FilterData filterData;
@@ -70,20 +60,6 @@ public class RepositoryListActivity extends BaseActivityUtil
         mBinding.toolbarLayout.setExpandedTitleTypeface(tf);
 
         setupViews();
-
-        mAuth = FirebaseAuth.getInstance();
-
-        // Firebase Auth Listener
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                mUser = firebaseAuth.getCurrentUser();
-
-                invalidateOptionsMenu();
-            }
-        }; // ~mAuthListener
 
         // GitHubRepoService 인스턴스 생성
         final GitHubRepoService gitHubRepoService = ((NewGitHubRepoApplication) getApplication()).getGitHubRepoService();
@@ -255,19 +231,5 @@ public class RepositoryListActivity extends BaseActivityUtil
                 Toast.makeText(this, getString(R.string.noti_edited), Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        mAuth.removeAuthStateListener(mAuthListener);
     }
 }
