@@ -10,9 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.List;
 
@@ -27,6 +31,9 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
     private final OnRepoItemClickListener onRepoItemClickListener;
 
     private List<GitHubRepoService.RepositoryItem> items;
+
+    private final int CONTENT_TYPE = 0;
+    private final int AD_TYPE = 1;
 
     // RepositoryAdapter - Constructor
     RepositoryAdapter(Context context, OnRepoItemClickListener onRepoItemClickListener) {
@@ -55,9 +62,32 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
     @Override
     public RepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        final View view = LayoutInflater.from(context).inflate(R.layout.repo_item, parent, false);
+        AdView adView;
+        RepoViewHolder repoViewHolder;
 
-        return new RepoViewHolder(view);
+        if (viewType == AD_TYPE) {
+
+            adView = new AdView(context);
+            adView.setAdSize(AdSize.BANNER);
+
+            adView.setAdUnitId(context.getString(R.string.banner_ad_unit_id));
+
+            float density = context.getResources().getDisplayMetrics().density;
+            int height = Math.round(AdSize.BANNER.getHeight() * density);
+            AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, height);
+            adView.setLayoutParams(params);
+
+            AdRequest request = new AdRequest.Builder().build();
+            adView.loadAd(request);
+
+            repoViewHolder = new RepoViewHolder(adView);
+        } else {
+
+            final View view = LayoutInflater.from(context).inflate(R.layout.repo_item, parent, false);
+            repoViewHolder = new RepoViewHolder(view);
+        }
+
+        return repoViewHolder;
     }
 
     /**
@@ -67,47 +97,61 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
     @Override
     public void onBindViewHolder(final RepoViewHolder holder, int position) {
 
-        final GitHubRepoService.RepositoryItem item = getItemAt(position);
+        if (position % 6 != 3) {
 
-        holder.bindItem(item);
-        final RepoItemBinding binding = holder.getBinding();
+            final GitHubRepoService.RepositoryItem item = getItemAt(position);
 
-        // 뷰가 클릭되면 클릭된 아이템을 Listener에게 알린다
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.bindItem(item);
+            final RepoItemBinding binding = holder.getBinding();
 
-            @Override
-            public void onClick(View v) {
-                onRepoItemClickListener.onRepositoryItemClick(item);
+            // 뷰가 클릭되면 클릭된 아이템을 Listener에게 알린다
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    onRepoItemClickListener.onRepositoryItemClick(item);
+                }
+            });
+
+            // Repo의 Language가 null인 경우 language icon을 표시하지 않는다
+            if (item.language == null) {
+
+                holder.binding.repoLanguageIcon.setVisibility(View.GONE);
+            } else {
+
+                holder.binding.repoLanguageIcon.setVisibility(View.VISIBLE);
+
+                // Change shape_language_icon color dynamically
+                GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();
+                bgShape.setColor(new LanguageColorsData().getColor(item.language));
             }
-        });
 
-        // Repo의 Language가 null인 경우 language icon을 표시하지 않는다
-        if (item.language == null) {
+            // 이미지는 Glide라는 라이브러리로 데이터를 설정한다
+            Glide.with(context)
+                    .load(item.owner.avatar_url)
+                    .asBitmap().centerCrop().into(new BitmapImageViewTarget(binding.repoImage) {
 
-            holder.binding.repoLanguageIcon.setVisibility(View.GONE);
-        } else {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    // 이미지를 동그랗게 만든다
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    binding.repoImage.setImageDrawable(circularBitmapDrawable);
+                }
+            });
+        }
+    }
 
-            holder.binding.repoLanguageIcon.setVisibility(View.VISIBLE);
+    @Override
+    public int getItemViewType(int position) {
 
-            // Change shape_language_icon color dynamically
-            GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();
-            bgShape.setColor(new LanguageColorsData().getColor(item.language));
+        if (position % 6 == 3) {
+
+            return AD_TYPE;
         }
 
-        // 이미지는 Glide라는 라이브러리로 데이터를 설정한다
-        Glide.with(context)
-                .load(item.owner.avatar_url)
-                .asBitmap().centerCrop().into(new BitmapImageViewTarget(binding.repoImage) {
-
-            @Override
-            protected void setResource(Bitmap resource) {
-                // 이미지를 동그랗게 만든다
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                circularBitmapDrawable.setCircular(true);
-                binding.repoImage.setImageDrawable(circularBitmapDrawable);
-            }
-        });
+        return CONTENT_TYPE;
     }
 
     @Override
@@ -126,7 +170,10 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
         RepoViewHolder(View itemView) {
             super(itemView);
 
-            binding = DataBindingUtil.bind(itemView);
+            if (!(itemView instanceof AdView)) {
+
+                binding = DataBindingUtil.bind(itemView);
+            }
         }
 
         void bindItem(GitHubRepoService.RepositoryItem item) {
