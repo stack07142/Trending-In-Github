@@ -63,6 +63,11 @@ dependencies {
     // Firebase AdMob
     compile 'com.google.firebase:firebase-ads:10.0.1'
 
+    // Open Source helper Libraries
+    compile('com.mikepenz:aboutlibraries:5.9.7@aar') {
+        transitive = true
+    }
+
     testCompile 'junit:junit:4.12'
 }
 

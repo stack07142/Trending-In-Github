@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.util.ArrayList;
 
@@ -108,6 +110,15 @@ public class RepositoryListActivity extends BaseActivityUtil
         switch (item.getItemId()) {
 
             case R.id.oss_license:
+                new LibsBuilder()
+                        .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                        .withActivityTitle(getString(R.string.oss_license))
+                        .withAboutIconShown(true)
+                        .withAboutDescription(getString(R.string.opensource_license_notice))
+                        .withAutoDetect(true)
+                        .withLicenseShown(true)
+                        .withVersionShown(true)
+                        .start(this);
                 return true;
 
             default:

@@ -29,7 +29,6 @@
             android:name=".view.DetailRepositoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".util.BaseActivityUtil" />
-
     </application>
 
 </manifest>
