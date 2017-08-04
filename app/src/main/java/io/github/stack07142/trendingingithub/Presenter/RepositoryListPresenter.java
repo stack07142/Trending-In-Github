@@ -145,35 +145,4 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
 
         repositoryListView.startDetailActivity(item.full_name);
     }
-
-    @Override
-    public void selectSignInMenu() {
-
-        repositoryListView.showProgress();
-        repositoryListView.startSignInOutActivity(ResultCode.REQUEST_GITHUB_SIGNIN);
-    }
-
-    @Override
-    public void selectSignOutMenu() {
-
-        repositoryListView.showProgress();
-        repositoryListView.startSignInOutActivity(ResultCode.REQUEST_GITHUB_SIGNOUT);
-    }
-
-    @Override
-    public void selectStar() {
-
-    }
-
-    @Override
-    public void unselectStar() {
-
-    }
-
-    @Override
-    public void completeSignInOut(@ResultCode.Result int resultCode) {
-
-        repositoryListView.hideProgress();
-        repositoryListView.showNoti(resultCode);
-    }
 }

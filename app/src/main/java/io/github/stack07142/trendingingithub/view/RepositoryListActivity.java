@@ -1,7 +1,6 @@
 package io.github.stack07142.trendingingithub.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -124,19 +123,6 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        // User is signed In
-        if (mUser != null) {
-
-            menu.findItem(R.id.sign_in).setVisible(false);
-            menu.findItem(R.id.sign_out).setVisible(true);
-        }
-        // User is signed Out
-        else {
-
-            menu.findItem(R.id.sign_in).setVisible(true);
-            menu.findItem(R.id.sign_out).setVisible(false);
-        }
-
         return true;
     }
 
@@ -146,18 +132,6 @@ public class RepositoryListActivity extends BaseActivityUtil
         switch (item.getItemId()) {
 
             case R.id.oss_license:
-                return true;
-
-            case R.id.sign_in:
-
-                repositoryListPresenter.selectSignInMenu();
-
-                return true;
-
-            case R.id.sign_out:
-
-                repositoryListPresenter.selectSignOutMenu();
-
                 return true;
 
             default:
@@ -295,34 +269,5 @@ public class RepositoryListActivity extends BaseActivityUtil
         super.onStop();
 
         mAuth.removeAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void startSignInOutActivity(@ResultCode.Result int requestCode) {
-
-        if (requestCode == ResultCode.REQUEST_GITHUB_SIGNIN) {
-
-            Intent signInIntent = new Intent(this, SignInOutActivity.class);
-            signInIntent.putExtra(ResultCode.REQUEST_CODE, ResultCode.REQUEST_GITHUB_SIGNIN);
-
-            startActivityForResult(signInIntent, ResultCode.REQUEST_GITHUB_SIGNIN);
-        } else if (requestCode == ResultCode.REQUEST_GITHUB_SIGNOUT) {
-
-            Intent signOutIntent = new Intent(this, SignInOutActivity.class);
-            signOutIntent.putExtra(ResultCode.REQUEST_CODE, ResultCode.REQUEST_GITHUB_SIGNOUT);
-
-            startActivityForResult(signOutIntent, ResultCode.REQUEST_GITHUB_SIGNOUT);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ResultCode.REQUEST_GITHUB_SIGNIN
-                || requestCode == ResultCode.REQUEST_GITHUB_SIGNOUT) {
-
-            repositoryListPresenter.completeSignInOut(resultCode);
-        }
     }
 }

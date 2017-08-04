@@ -89,7 +89,7 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
 
             holder.binding.repoLanguageIcon.setVisibility(View.VISIBLE);
 
-            // Change shape color dynamically
+            // Change shape_language_icon color dynamically
             GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();
             bgShape.setColor(new LanguageColorsData().getColor(item.language));
         }

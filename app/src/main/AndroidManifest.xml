@@ -25,29 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <activity android:name=".NewGitHubRepoApplication"></activity> -->
         <activity
             android:name=".view.DetailRepositoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".util.BaseActivityUtil" />
-        <activity
-            android:name=".view.SignInOutActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <activity
-            android:name=".view.RedirectedActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="stack07142" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
