@@ -6,6 +6,9 @@
 
 <a href="https://play.google.com/store/apps/details?id=io.github.stack07142.trendingingithub" > <img src="./img/google-play-badge.png" width="150" height="58"></a>
 
+![](https://dl.dropboxusercontent.com/s/q9tnl7ze7lnvsgs/50B53852-F12D-4E95-AC33-D42786E9AD12-749-00028DCCFF47721C.gif?dl=0)
+![](https://dl.dropboxusercontent.com/s/d14rhkizh66ue7u/5CD141B3-45E8-4F78-B52F-9D9E9EE9B4CF-749-00028DD89CA64517.gif?dl=0)
+
 <img src="./img/Screenshot_1501901558.png" width="280" height="498"> <img src="./img/Screenshot_1501901571.png" width="280" height="498">
 <img src="./img/Screenshot_1501901658.png" width="280" height="498"> <img src="./img/Screenshot_1501901578.png" width="280" height="498">
 <img src="./img/Screenshot_1501901589.png" width="280" height="498">
