@@ -6,10 +6,8 @@
 
 <a href="https://play.google.com/store/apps/details?id=io.github.stack07142.trendingingithub" > <img src="./img/google-play-badge.png" width="150" height="58"></a>
 
-<img src="./img/Screenshot_1501901558.png" width="280" height="498">
-<img src="./img/Screenshot_1501901571.png" width="280" height="498">
-<img src="./img/Screenshot_1501901658.png" width="280" height="498">
-<img src="./img/Screenshot_1501901578.png" width="280" height="498">
+<img src="./img/Screenshot_1501901558.png" width="280" height="498"> <img src="./img/Screenshot_1501901571.png" width="280" height="498">
+<img src="./img/Screenshot_1501901658.png" width="280" height="498"> <img src="./img/Screenshot_1501901578.png" width="280" height="498">
 <img src="./img/Screenshot_1501901589.png" width="280" height="498">
 
 ## Features
