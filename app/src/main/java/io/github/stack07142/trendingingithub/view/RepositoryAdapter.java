@@ -97,7 +97,8 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
     @Override
     public void onBindViewHolder(final RepoViewHolder holder, int position) {
 
-        if (position % 6 != 3) {
+        //if (position % 6 != 3) {
+        if (true) {
 
             final GitHubRepoService.RepositoryItem item = getItemAt(position);
 
@@ -148,7 +149,9 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
 
         if (position % 6 == 3) {
 
-            return AD_TYPE;
+            //return AD_TYPE;
+            return CONTENT_TYPE;
+
         }
 
         return CONTENT_TYPE;
