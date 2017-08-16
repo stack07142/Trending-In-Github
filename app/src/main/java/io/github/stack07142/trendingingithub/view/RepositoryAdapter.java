@@ -98,50 +98,48 @@ class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepoViewH
     public void onBindViewHolder(final RepoViewHolder holder, int position) {
 
         if (position % 6 != 3) {
-            if (true) {
 
-                final GitHubRepoService.RepositoryItem item = getItemAt(position);
+            final GitHubRepoService.RepositoryItem item = getItemAt(position);
 
-                holder.bindItem(item);
-                final RepoItemBinding binding = holder.getBinding();
+            holder.bindItem(item);
+            final RepoItemBinding binding = holder.getBinding();
 
-                // 뷰가 클릭되면 클릭된 아이템을 Listener에게 알린다
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+            // 뷰가 클릭되면 클릭된 아이템을 Listener에게 알린다
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        onRepoItemClickListener.onRepositoryItemClick(item);
-                    }
-                });
-
-                // Repo의 Language가 null인 경우 language icon을 표시하지 않는다
-                if (item.language == null) {
-
-                    holder.binding.repoLanguageIcon.setVisibility(View.GONE);
-                } else {
-
-                    holder.binding.repoLanguageIcon.setVisibility(View.VISIBLE);
-
-                    // Change shape_language_icon color dynamically
-                    GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();
-                    bgShape.setColor(new LanguageColorsData().getColor(item.language));
+                @Override
+                public void onClick(View v) {
+                    onRepoItemClickListener.onRepositoryItemClick(item);
                 }
+            });
 
-                // 이미지는 Glide라는 라이브러리로 데이터를 설정한다
-                Glide.with(context)
-                        .load(item.owner.avatar_url)
-                        .asBitmap().centerCrop().into(new BitmapImageViewTarget(binding.repoImage) {
+            // Repo의 Language가 null인 경우 language icon을 표시하지 않는다
+            if (item.language == null) {
 
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        // 이미지를 동그랗게 만든다
-                        RoundedBitmapDrawable circularBitmapDrawable =
-                                RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                        circularBitmapDrawable.setCircular(true);
-                        binding.repoImage.setImageDrawable(circularBitmapDrawable);
-                    }
-                });
+                holder.binding.repoLanguageIcon.setVisibility(View.GONE);
+            } else {
+
+                holder.binding.repoLanguageIcon.setVisibility(View.VISIBLE);
+
+                // Change shape_language_icon color dynamically
+                GradientDrawable bgShape = (GradientDrawable) binding.repoLanguageIcon.getBackground();
+                bgShape.setColor(new LanguageColorsData().getColor(item.language));
             }
+
+            // 이미지는 Glide라는 라이브러리로 데이터를 설정한다
+            Glide.with(context)
+                    .load(item.owner.avatar_url)
+                    .asBitmap().centerCrop().into(new BitmapImageViewTarget(binding.repoImage) {
+
+                @Override
+                protected void setResource(Bitmap resource) {
+                    // 이미지를 동그랗게 만든다
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    binding.repoImage.setImageDrawable(circularBitmapDrawable);
+                }
+            });
         }
     }
 
