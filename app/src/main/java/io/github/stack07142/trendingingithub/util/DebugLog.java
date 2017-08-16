@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class DebugLog {
 
-    static final boolean DEBUG = true;
+    static final boolean DEBUG = false;
     private static final String LOG_TAG = "DebugLog";
 
     public static void logD(String tag, String log) {

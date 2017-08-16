@@ -1,6 +1,7 @@
 package io.github.stack07142.trendingingithub.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class RepositoryListActivity extends BaseActivityUtil
     // FAB
     FilterData filterData;
     ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
+    MyFabFragment dialogFrag;
 
     // Data Binding
     private ActivityRepoListBinding mBinding;
@@ -75,7 +77,7 @@ public class RepositoryListActivity extends BaseActivityUtil
             @Override
             public void onClick(View view) {
 
-                MyFabFragment dialogFrag = MyFabFragment.newInstance();
+                dialogFrag = MyFabFragment.newInstance();
                 dialogFrag.setParentFab(mBinding.fab);
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
@@ -241,6 +243,17 @@ public class RepositoryListActivity extends BaseActivityUtil
 
                 Toast.makeText(this, getString(R.string.noti_edited), Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (dialogFrag.isAdded()) {
+
+            dialogFrag.dismiss();
+            dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
         }
     }
 }
