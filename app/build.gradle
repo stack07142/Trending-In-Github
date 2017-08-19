@@ -68,6 +68,9 @@ dependencies {
         transitive = true
     }
 
+    // Flipboard-Bottom-Sheet
+    compile 'com.flipboard:bottomsheet-core:1.5.0'
+
     testCompile 'junit:junit:4.12'
 }
 

@@ -32,8 +32,6 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
     // Presenter에 직접 접근하지 않는다. Interface를 통한 접근
     private DetailRepositoryContract.UserActions detailPresenter;
 
-    //private ImageView ownerImage;
-
     private String fullRepositoryName;
 
     /**
@@ -61,6 +59,11 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
 
         detailPresenter = new DetailRepositoryPresenter((DetailRepositoryContract.View) this, gitHubRepoService);
         detailPresenter.prepare();
+
+        // Bottom Sheet
+        mBinding.bottomsheet.showWithSheetView(getLayoutInflater().inflate(R.layout.layout_bottom_sheet, mBinding.bottomsheet, false));
+        mBinding.bottomsheet.setShouldDimContentView(false);
+        mBinding.bottomsheet.setPeekSheetTranslation(330f);
     }
 
     /**
@@ -104,9 +107,23 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
             }
         };
 
+        // READ ME Button Click Listener
+        View.OnClickListener readmeListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Bottom Sheet 동작 제어
+                if (!mBinding.bottomsheet.isSheetShowing()) {
+
+                    mBinding.bottomsheet.showWithSheetView(getLayoutInflater().inflate(R.layout.layout_bottom_sheet, mBinding.bottomsheet, false));
+                }
+            }
+        };
+
         mBinding.fullname.setOnClickListener(listener);
         mBinding.ownerImage.setOnClickListener(listener);
         mBinding.connectUrlBtn.setOnClickListener(listener);
+        mBinding.readmeBtn.setOnClickListener(readmeListener);
     }
 
     @Override
