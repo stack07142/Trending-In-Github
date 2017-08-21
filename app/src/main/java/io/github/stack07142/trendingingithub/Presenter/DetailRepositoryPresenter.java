@@ -1,5 +1,7 @@
 package io.github.stack07142.trendingingithub.Presenter;
 
+import android.util.Log;
+
 import io.github.stack07142.trendingingithub.contract.DetailRepositoryContract;
 import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.util.ResultCode;
@@ -14,6 +16,7 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
 
     private final GitHubRepoService gitHubRepoService;
     private GitHubRepoService.RepositoryItem repositoryItem;
+    private GitHubRepoService.ReadMe readMe;
 
     // Constructor
     public DetailRepositoryPresenter(DetailRepositoryContract.View detailView, GitHubRepoService gitHubRepoService) {
@@ -26,7 +29,7 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
      * Contract interface 구현
      */
     @Override
-    public void titleClick() {
+    public void titleButtonClick() {
 
         try {
 
@@ -37,6 +40,12 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
             // View에 View 변경을 통지한다
             detailView.showNoti(ResultCode.FAIL);
         }
+    }
+
+    @Override
+    public void readMeButtonClick() {
+
+        detailView.startReadMeView();
     }
 
     @Override
@@ -84,7 +93,35 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
 
                         // View에 View 변경을 통지한다
                         detailView.showNoti(ResultCode.FAIL);
+                        detailView.hideProgress();
+                    }
+                });
 
+        getReadMe(owner, repoName);
+    }
+
+    /*
+     * 리포지토리의 README.md 문서를 가져온다
+     */
+    private void getReadMe(String owner, String repoName) {
+
+        gitHubRepoService.detailRepoReadMe(owner, repoName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<GitHubRepoService.ReadMe>() {
+                    @Override
+                    public void call(GitHubRepoService.ReadMe response) {
+
+                        readMe = response;
+
+                        detailView.showReadMeButton(readMe.download_url);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
+                        // View에 View 변경을 통지한다
+                        detailView.showNoti(ResultCode.FAIL);
                         detailView.hideProgress();
                     }
                 });

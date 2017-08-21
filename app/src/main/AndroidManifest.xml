@@ -35,6 +35,10 @@
             android:name=".util.BaseActivityUtil"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.MarkDownViewActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

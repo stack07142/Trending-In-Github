@@ -25,7 +25,11 @@ public interface DetailRepositoryContract {
 
         void startBrowser(String url);
 
+        void startReadMeView();
+
         void showNoti(@ResultCode.Result int result);
+
+        void showReadMeButton(String readme_download_url);
     }
 
     /**
@@ -34,7 +38,9 @@ public interface DetailRepositoryContract {
      */
     interface UserActions {
 
-        void titleClick();
+        void titleButtonClick();
+
+        void readMeButtonClick();
 
         void prepare();
     }

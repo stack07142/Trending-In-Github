@@ -23,16 +23,18 @@ import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
+import static io.github.stack07142.trendingingithub.util.ResultCode.EXTRA_FULL_REPOSITORY_NAME;
+import static io.github.stack07142.trendingingithub.util.ResultCode.README_DOWNLOAD_URL;
+
 public class DetailRepositoryActivity extends BaseActivityUtil implements DetailRepositoryContract.View {
 
     private ActivityDetailRepoBinding mBinding;
-
-    private static final String EXTRA_FULL_REPOSITORY_NAME = "EXTRA_FULL_REPOSITORY_NAME";
 
     // Presenter에 직접 접근하지 않는다. Interface를 통한 접근
     private DetailRepositoryContract.UserActions detailPresenter;
 
     private String fullRepositoryName;
+    private String readme_download_url;
 
     /**
      * DetailActivity를 시작하는 메소드
@@ -59,11 +61,6 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
 
         detailPresenter = new DetailRepositoryPresenter((DetailRepositoryContract.View) this, gitHubRepoService);
         detailPresenter.prepare();
-
-        // Bottom Sheet
-        mBinding.bottomsheet.showWithSheetView(getLayoutInflater().inflate(R.layout.layout_bottom_sheet, mBinding.bottomsheet, false));
-        mBinding.bottomsheet.setShouldDimContentView(false);
-        mBinding.bottomsheet.setPeekSheetTranslation(330f);
     }
 
     /**
@@ -103,7 +100,7 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
             public void onClick(View v) {
 
                 // Presenter에 Event 발생을 통지한다
-                detailPresenter.titleClick();
+                detailPresenter.titleButtonClick();
             }
         };
 
@@ -112,11 +109,7 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
             @Override
             public void onClick(View v) {
 
-                // Bottom Sheet 동작 제어
-                if (!mBinding.bottomsheet.isSheetShowing()) {
-
-                    mBinding.bottomsheet.showWithSheetView(getLayoutInflater().inflate(R.layout.layout_bottom_sheet, mBinding.bottomsheet, false));
-                }
+                detailPresenter.readMeButtonClick();
             }
         };
 
@@ -130,6 +123,28 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
     public void startBrowser(String url) {
 
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    @Override
+    public void startReadMeView() {
+
+        Intent intent = new Intent(DetailRepositoryActivity.this, MarkDownViewActivity.class);
+        intent.putExtra(README_DOWNLOAD_URL, readme_download_url);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showReadMeButton(String readme_download_url) {
+
+        this.readme_download_url = readme_download_url;
+
+        if (readme_download_url == null) {
+
+            mBinding.readmeBtn.setVisibility(View.GONE);
+        } else {
+
+            mBinding.readmeBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

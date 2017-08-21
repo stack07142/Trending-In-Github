@@ -12,6 +12,8 @@ import rx.Observable;
  */
 public interface GitHubRepoService {
 
+    /* 1. Repositories 검색 ---------------------------------------------------------------------- */
+
     /**
      * GitHub의 리포지토리 검색 결과를 가져온다
      * https://developer.github.com/v3/search/
@@ -21,15 +23,6 @@ public interface GitHubRepoService {
      */
     @GET("search/repositories?sort=stars&order=desc")
     Observable<Repositories> listRepos(@Query("q") String query);
-
-    /**
-     * 리포지토리 상세 내역을 가져온다
-     * https://developer.github.com/v3/repos/#get
-     *
-     * @return API 액세스 결과 취득 후의 콜백으로서 RepositoryItem을 가져올 수 있는 RxJava의 Observable로 반환한다
-     */
-    @GET("repos/{repoOwner}/{repoName}")
-    Observable<RepositoryItem> detailRepo(@Path(value = "repoOwner") String owner, @Path(value = "repoName") String repoName);
 
     /**
      * API 액세스 결과가 이 클래스에 들어온다
@@ -46,6 +39,18 @@ public interface GitHubRepoService {
             this.items = items;
         }
     }
+
+    /* 2. Repository 상세 내용 -------------------------------------------------------------------- */
+
+    /**
+     * 리포지토리 상세 내역을 가져온다
+     * https://developer.github.com/v3/repos/#get
+     * https://api.github.com/repos/stack07142/Trending-In-Github
+     *
+     * @return API 액세스 결과 취득 후의 콜백으로서 RepositoryItem을 가져올 수 있는 RxJava의 Observable로 반환한다
+     */
+    @GET("repos/{repoOwner}/{repoName}")
+    Observable<RepositoryItem> detailRepo(@Path(value = "repoOwner") String owner, @Path(value = "repoName") String repoName);
 
     /**
      * API 액세스 결과가 이 클래스에 들어온다
@@ -120,6 +125,30 @@ public interface GitHubRepoService {
             this.repos_url = repos_url;
             this.followers_url = followers_url;
         }
+    }
 
+    /* 3. Repository's README.md ---------------------------------------------------------------- */
+
+    /**
+     * 리포지토리의 README.md를 가져온다.
+     * https://developer.github.com/v3/repos/contents/#get-the-readme
+     * https://api.github.com/repos/stack07142/Trending-In-Github/readme
+     * -> download_url
+     *
+     * @return API 액세스 결과 취득 후의 콜백으로서 RepositoryItem을 가져올 수 있는 RxJava의 Observable로 반환한다
+     */
+    @GET("repos/{repoOwner}/{repoName}/readme")
+    Observable<ReadMe> detailRepoReadMe(@Path(value = "repoOwner") String owner, @Path(value = "repoName") String repoName);
+
+    public static class ReadMe {
+
+        public final String html_url;
+        public final String download_url;
+
+        public ReadMe(String html_url, String download_url) {
+
+            this.html_url = html_url;
+            this.download_url = download_url;
+        }
     }
 }
