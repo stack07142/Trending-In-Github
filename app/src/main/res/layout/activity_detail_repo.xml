@@ -40,7 +40,8 @@
                 android:id="@+id/detail_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp">
+                android:layout_margin="8dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/owner_image"
@@ -138,7 +139,8 @@
                     android:layout_below="@id/connect_url_btn"
                     android:layout_marginBottom="6dp"
                     android:layout_marginStart="6dp"
-                    android:text="@string/readme" />
+                    android:text="@string/readme"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 

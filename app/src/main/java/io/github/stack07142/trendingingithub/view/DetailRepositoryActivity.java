@@ -24,7 +24,6 @@ import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
 import static io.github.stack07142.trendingingithub.util.ResultCode.EXTRA_FULL_REPOSITORY_NAME;
-import static io.github.stack07142.trendingingithub.util.ResultCode.README_DOWNLOAD_URL;
 
 public class DetailRepositoryActivity extends BaseActivityUtil implements DetailRepositoryContract.View {
 
@@ -34,7 +33,6 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
     private DetailRepositoryContract.UserActions detailPresenter;
 
     private String fullRepositoryName;
-    private String readme_download_url;
 
     /**
      * DetailActivity를 시작하는 메소드
@@ -126,24 +124,14 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
     }
 
     @Override
-    public void startReadMeView() {
+    public void showReadMeButton(boolean isExist) {
 
-        Intent intent = new Intent(DetailRepositoryActivity.this, MarkDownViewActivity.class);
-        intent.putExtra(README_DOWNLOAD_URL, readme_download_url);
-        startActivity(intent);
-    }
-
-    @Override
-    public void showReadMeButton(String readme_download_url) {
-
-        this.readme_download_url = readme_download_url;
-
-        if (readme_download_url == null) {
-
-            mBinding.readmeBtn.setVisibility(View.GONE);
-        } else {
+        if (isExist) {
 
             mBinding.readmeBtn.setVisibility(View.VISIBLE);
+        } else {
+
+            mBinding.readmeBtn.setVisibility(View.GONE);
         }
     }
 

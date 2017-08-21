@@ -1,7 +1,5 @@
 package io.github.stack07142.trendingingithub.Presenter;
 
-import android.util.Log;
-
 import io.github.stack07142.trendingingithub.contract.DetailRepositoryContract;
 import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.util.ResultCode;
@@ -45,23 +43,14 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
     @Override
     public void readMeButtonClick() {
 
-        detailView.startReadMeView();
+        detailView.startBrowser(readMe.html_url);
     }
 
     @Override
     public void prepare() {
 
-        loadRepository();
-    }
-
-    /**
-     * 한 개의 리포지토리에 대한 정보를 가져온다
-     * 기본적으로 API 액세스 방법은 RepositoryListActivity#loadRepositories(String)과 같다
-     */
-    private void loadRepository() {
-
-        detailView.hideLayout();
         detailView.showProgress();
+        detailView.hideLayout();
 
         String fullRepositoryName = detailView.getFullRepositoryName();
 
@@ -69,6 +58,16 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
         final String[] repoData = fullRepositoryName.split("/");
         final String owner = repoData[0];
         final String repoName = repoData[1];
+
+        getReadMe(owner, repoName);
+        loadRepository(owner, repoName);
+    }
+
+    /**
+     * 한 개의 리포지토리에 대한 정보를 가져온다
+     * 기본적으로 API 액세스 방법은 RepositoryListActivity#loadRepositories(String)과 같다
+     */
+    private void loadRepository(String owner, String repoName) {
 
         gitHubRepoService.detailRepo(owner, repoName)
                 .subscribeOn(Schedulers.io())
@@ -86,18 +85,17 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
 
                         detailView.hideProgress();
                         detailView.showLayout();
+
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
 
                         // View에 View 변경을 통지한다
-                        detailView.showNoti(ResultCode.FAIL);
                         detailView.hideProgress();
+                        detailView.showNoti(ResultCode.FAIL);
                     }
                 });
-
-        getReadMe(owner, repoName);
     }
 
     /*
@@ -114,15 +112,12 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
 
                         readMe = response;
 
-                        detailView.showReadMeButton(readMe.download_url);
+                        detailView.showReadMeButton(readMe.html_url != null);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
 
-                        // View에 View 변경을 통지한다
-                        detailView.showNoti(ResultCode.FAIL);
-                        detailView.hideProgress();
                     }
                 });
     }
