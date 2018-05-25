@@ -8,12 +8,12 @@ import java.util.Calendar;
 
 import io.github.stack07142.trendingingithub.contract.RepositoryListContract;
 import io.github.stack07142.trendingingithub.model.GitHubRepoService;
-import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * interface-UserAction: View -> Presenter (event)
@@ -108,13 +108,9 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
 
                                 if (retItems == null || retItems.size() == 0) {
 
-                                    DebugLog.logD(TAG, "retItems is null");
-
                                     repositoryListView.showEmptyScreen();
 
                                 } else {
-
-                                    DebugLog.logD(TAG, "retItems size = " + retItems.size());
 
                                     // GET Repositories -> Recycler View에 표시한다
                                     repositoryListView.showRepositories(retItems);
@@ -129,6 +125,7 @@ public class RepositoryListPresenter implements RepositoryListContract.UserActio
 
                             // 통신 실패 에러 표시. SnackBar
                             repositoryListView.showNoti(ResultCode.FAIL);
+                            Timber.d("onError(): %s", e.getMessage());
                         }
 
                         @Override

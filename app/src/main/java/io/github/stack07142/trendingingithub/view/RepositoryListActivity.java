@@ -28,7 +28,6 @@ import io.github.stack07142.trendingingithub.model.FilterPreferenceData;
 import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
-import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
 /**
@@ -182,9 +181,6 @@ public class RepositoryListActivity extends BaseActivityUtil
 
     @Override
     public void showEmptyScreen() {
-
-        DebugLog.logD(TAG, "showEmptyScreen()");
-
         mBinding.contentLayout.recyclerRepos.setVisibility(View.GONE);
         mBinding.contentLayout.emptyLayout.setVisibility(View.VISIBLE);
     }
@@ -218,15 +214,8 @@ public class RepositoryListActivity extends BaseActivityUtil
     @Override
     public void onResult(Object result) {
 
-        DebugLog.logD(TAG, "filter - onResult:  " + result.toString());
-
         if (result.toString().equalsIgnoreCase("swiped_down")) {
-
-            DebugLog.logD(TAG, "filter - onResult: <<swiped_down>>, DO NOTHING.");
         } else {
-
-            DebugLog.logD(TAG, "filter - onResult: " + result.toString());
-
             applied_filters = (ArrayMap<String, ArrayList<String>>) result;
 
             // Query

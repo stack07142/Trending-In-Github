@@ -26,7 +26,6 @@ import java.util.List;
 
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.model.FilterData;
-import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.model.FilterPreferenceData;
 
 import static io.github.stack07142.trendingingithub.R.string.filter_error_null_lang;
@@ -62,13 +61,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DebugLog.logD(TAG, "onCreate()");
-
         // preference 불러오기
         refreshFilters();
-
-        DebugLog.logD(TAG, "edited_filters = " + edited_filters.toString());
-        DebugLog.logD(TAG, "applied_filters = " + applied_filters.get(FilterPreferenceData.LANGUAGE).toString());
     }
 
     private void refreshFilters() {
@@ -85,8 +79,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        DebugLog.logD(TAG, "onDestory()");
     }
 
     @Override

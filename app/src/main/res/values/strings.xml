@@ -20,6 +20,7 @@
         <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
         -->
     <string name="banner_ad_unit_id">ca-app-pub-8626870474063937/3285976610</string>
+
     <string name="opensource_license_notice">
     This application use Open Source Software(OSS). You can find the source code of these open source projects,
         along with applicable license information, below.
