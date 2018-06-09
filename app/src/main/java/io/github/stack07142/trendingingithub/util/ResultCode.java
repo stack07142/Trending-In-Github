@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class ResultCode {
-
     public static final String EXTRA_FULL_REPOSITORY_NAME = "EXTRA_FULL_REPOSITORY_NAME";
     public static final String README_DOWNLOAD_URL = "README_DOWNLOAD_URL";
     public static final String REQUEST_CODE = "requestCode";

@@ -12,6 +12,8 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import io.github.stack07142.trendingingithub.Presenter.DetailRepositoryPresenter;
@@ -57,7 +59,7 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
 
         final GitHubRepoService gitHubRepoService = ((NewGitHubRepoApplication) getApplication()).getGitHubRepoService();
 
-        detailPresenter = new DetailRepositoryPresenter((DetailRepositoryContract.View) this, gitHubRepoService);
+        detailPresenter = new DetailRepositoryPresenter(this, gitHubRepoService);
         detailPresenter.prepare();
     }
 
@@ -81,16 +83,18 @@ public class DetailRepositoryActivity extends BaseActivityUtil implements Detail
 
         // 서버로부터 이미지를 가져와 imageView에 넣는다
         Glide.with(DetailRepositoryActivity.this)
+                .asBitmap()
+                .apply(RequestOptions.bitmapTransform(new CenterCrop()))
                 .load(response.owner.avatar_url)
-                .asBitmap().centerCrop().into(new BitmapImageViewTarget(mBinding.ownerImage) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(getResources(), resource);
-                circularBitmapDrawable.setCircular(true);
-                mBinding.ownerImage.setImageDrawable(circularBitmapDrawable);
-            }
-        });
+                .into(new BitmapImageViewTarget(mBinding.ownerImage) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        mBinding.ownerImage.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
 
         // 로고와 리포지토리 이름을 탭하면 작자의 GitHub 페이지를 브라우저로 연다
         View.OnClickListener listener = new View.OnClickListener() {

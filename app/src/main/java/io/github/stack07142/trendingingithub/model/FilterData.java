@@ -5,8 +5,8 @@ import java.util.List;
 
 public class FilterData {
 
-    List<String> languageList = new ArrayList<>();
-    List<String> createdList = new ArrayList<>();
+    private List<String> languageList = new ArrayList<>();
+    private List<String> createdList = new ArrayList<>();
 
     public FilterData() {
 
@@ -372,22 +372,18 @@ public class FilterData {
     }
 
     public List<String> getLanguageList() {
-
         return languageList;
     }
 
     public List<String> getCreatedList() {
-
         return createdList;
     }
 
     public int getLanguageListSize() {
-
         return languageList.size();
     }
 
     public int getLanguageIndex(String s) {
-
         return languageList.indexOf(s);
     }
 }

@@ -6,6 +6,7 @@ import io.github.stack07142.trendingingithub.util.ResultCode;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class DetailRepositoryPresenter implements DetailRepositoryContract.UserActions {
 
@@ -94,6 +95,7 @@ public class DetailRepositoryPresenter implements DetailRepositoryContract.UserA
                         // View에 View 변경을 통지한다
                         detailView.hideProgress();
                         detailView.showNoti(ResultCode.FAIL);
+                        Timber.d("onError(): %s", throwable.getMessage());
                     }
                 });
     }

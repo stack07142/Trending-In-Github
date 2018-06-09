@@ -1,6 +1,5 @@
 package io.github.stack07142.trendingingithub.view;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
-import com.google.android.gms.ads.MobileAds;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
@@ -29,29 +27,18 @@ import io.github.stack07142.trendingingithub.model.FilterPreferenceData;
 import io.github.stack07142.trendingingithub.model.GitHubRepoService;
 import io.github.stack07142.trendingingithub.model.NewGitHubRepoApplication;
 import io.github.stack07142.trendingingithub.util.BaseActivityUtil;
-import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.util.ResultCode;
 
-/**
- * interface-View: Presenter -> View 조작
- */
 public class RepositoryListActivity extends BaseActivityUtil
         implements RepositoryAdapter.OnRepoItemClickListener, RepositoryListContract.View, AAH_FabulousFragment.Callbacks {
-
     private static final String TAG = RepositoryListActivity.class.getSimpleName();
 
-    // FAB
     FilterData filterData;
     ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
     MyFabFragment dialogFrag;
 
-    // Data Binding
     private ActivityRepoListBinding mBinding;
-
-    // View는 Presenter로 직접 접근하지 않는다. Interface를 통해 접근한다.
     private RepositoryListContract.UserAction repositoryListPresenter;
-
-    // RecyclerView Adapter
     private RepositoryAdapter repositoryAdapter;
 
     @Override
@@ -66,9 +53,6 @@ public class RepositoryListActivity extends BaseActivityUtil
 
         setupViews();
 
-        // Admob
-        MobileAds.initialize(this, getString(R.string.admob_app_id));
-
         // GitHubRepoService 인스턴스 생성
         final GitHubRepoService gitHubRepoService = ((NewGitHubRepoApplication) getApplication()).getGitHubRepoService();
 
@@ -76,15 +60,10 @@ public class RepositoryListActivity extends BaseActivityUtil
         repositoryListPresenter = new RepositoryListPresenter((RepositoryListContract.View) this, gitHubRepoService);
 
         // FAB Listener
-        mBinding.fab.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                dialogFrag = MyFabFragment.newInstance();
-                dialogFrag.setParentFab(mBinding.fab);
-                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
-            }
+        mBinding.fab.setOnClickListener(view -> {
+            dialogFrag = MyFabFragment.newInstance();
+            dialogFrag.setParentFab(mBinding.fab);
+            dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
         });
 
         // FAB - FilterData
@@ -104,17 +83,13 @@ public class RepositoryListActivity extends BaseActivityUtil
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu, menu);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
-
             case R.id.oss_license:
                 new LibsBuilder()
                         .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
@@ -126,7 +101,6 @@ public class RepositoryListActivity extends BaseActivityUtil
                         .withVersionShown(true)
                         .start(this);
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -136,7 +110,6 @@ public class RepositoryListActivity extends BaseActivityUtil
      * 목록 등 화면 요소를 만든다
      */
     private void setupViews() {
-
         // Toolbar
         setSupportActionBar(mBinding.toolbar);
 
@@ -144,7 +117,7 @@ public class RepositoryListActivity extends BaseActivityUtil
         mBinding.contentLayout.recyclerRepos.setLayoutManager(new LinearLayoutManager(this));
 
         // Recycler View - set adapter, adapter 생성 시 OnRepoItemClickListener이 구현되었음을 보장
-        repositoryAdapter = new RepositoryAdapter((Context) this, (RepositoryAdapter.OnRepoItemClickListener) this);
+        repositoryAdapter = new RepositoryAdapter(this, this);
         mBinding.contentLayout.recyclerRepos.setAdapter(repositoryAdapter);
     }
 
@@ -153,7 +126,6 @@ public class RepositoryListActivity extends BaseActivityUtil
      */
     @Override
     public void onRepositoryItemClick(GitHubRepoService.RepositoryItem item) {
-
         // Presenter에 Event 발생을 통지한다
         repositoryListPresenter.selectRepositoryItem(item);
     }
@@ -165,19 +137,16 @@ public class RepositoryListActivity extends BaseActivityUtil
 
     @Override
     public void showProgress() {
-
         mBinding.progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
         mBinding.progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void showRepositories(ArrayList<GitHubRepoService.RepositoryItem> repositories) {
-
         mBinding.contentLayout.recyclerRepos.setVisibility(View.VISIBLE);
         mBinding.contentLayout.emptyLayout.setVisibility(View.GONE);
 
@@ -186,23 +155,17 @@ public class RepositoryListActivity extends BaseActivityUtil
 
     @Override
     public void showEmptyScreen() {
-
-        DebugLog.logD(TAG, "showEmptyScreen()");
-
         mBinding.contentLayout.recyclerRepos.setVisibility(View.GONE);
         mBinding.contentLayout.emptyLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showNoti(@ResultCode.Result int result) {
-
         String resultText = "";
 
         if (result == ResultCode.SUCCESS) {
-
             resultText = getString(R.string.result_success);
         } else if (result == ResultCode.FAIL) {
-
             resultText = getString(R.string.result_fail);
         }
 
@@ -211,7 +174,6 @@ public class RepositoryListActivity extends BaseActivityUtil
 
     @Override
     public void startDetailActivity(String fullRepositoryName) {
-
         DetailRepositoryActivity.start(this, fullRepositoryName);
     }
 
@@ -221,16 +183,8 @@ public class RepositoryListActivity extends BaseActivityUtil
 
     @Override
     public void onResult(Object result) {
-
-        DebugLog.logD(TAG, "filter - onResult:  " + result.toString());
-
         if (result.toString().equalsIgnoreCase("swiped_down")) {
-
-            DebugLog.logD(TAG, "filter - onResult: <<swiped_down>>, DO NOTHING.");
         } else {
-
-            DebugLog.logD(TAG, "filter - onResult: " + result.toString());
-
             applied_filters = (ArrayMap<String, ArrayList<String>>) result;
 
             // Query
@@ -238,7 +192,6 @@ public class RepositoryListActivity extends BaseActivityUtil
 
             // Edited 이후 다시 열기
             if (FilterPreferenceData.editedFlag) {
-
                 FilterPreferenceData.editedFlag = false;
 
                 MyFabFragment dialogFrag = MyFabFragment.newInstance();
@@ -255,7 +208,6 @@ public class RepositoryListActivity extends BaseActivityUtil
         super.onConfigurationChanged(newConfig);
 
         if (dialogFrag.isAdded()) {
-
             dialogFrag.dismiss();
             dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
         }

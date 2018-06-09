@@ -5,18 +5,14 @@ import android.graphics.Color;
 import java.util.HashMap;
 
 public class LanguageColorsData {
-
     private final HashMap<String, String> colorMap;
 
     public LanguageColorsData() {
-
         colorMap = new HashMap<>();
-
         setColors();
     }
 
     private void setColors() {
-
         colorMap.put("REALbasic", "null");
         colorMap.put("Lasso", "#999999");
         colorMap.put("ShaderLab", "null");
@@ -370,14 +366,10 @@ public class LanguageColorsData {
         colorMap.put("Lex", "#DBCA00");
     }
 
-
     public int getColor(String language) {
-
         if (colorMap.containsKey(language)) {
-
             return Color.parseColor(colorMap.get(language));
         }
-
         return Color.parseColor("#969696");
     }
 }

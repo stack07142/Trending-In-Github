@@ -1,7 +1,6 @@
 package io.github.stack07142.trendingingithub.view;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -26,7 +25,6 @@ import java.util.List;
 
 import io.github.stack07142.trendingingithub.R;
 import io.github.stack07142.trendingingithub.model.FilterData;
-import io.github.stack07142.trendingingithub.util.DebugLog;
 import io.github.stack07142.trendingingithub.model.FilterPreferenceData;
 
 import static io.github.stack07142.trendingingithub.R.string.filter_error_null_lang;
@@ -34,9 +32,6 @@ import static io.github.stack07142.trendingingithub.model.FilterPreferenceData.g
 import static io.github.stack07142.trendingingithub.model.FilterPreferenceData.setStringArrayPref;
 
 public class MyFabFragment extends AAH_FabulousFragment {
-
-    private final String TAG = MyFabFragment.class.getSimpleName();
-
     ArrayMap<String, ArrayList<String>> applied_filters = new ArrayMap<>();
     ArrayList<String> edited_filters = new ArrayList<>();
 
@@ -54,7 +49,6 @@ public class MyFabFragment extends AAH_FabulousFragment {
     TabLayout tabs_types;
 
     public static MyFabFragment newInstance() {
-
         return new MyFabFragment();
     }
 
@@ -62,13 +56,8 @@ public class MyFabFragment extends AAH_FabulousFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DebugLog.logD(TAG, "onCreate()");
-
         // preference 불러오기
         refreshFilters();
-
-        DebugLog.logD(TAG, "edited_filters = " + edited_filters.toString());
-        DebugLog.logD(TAG, "applied_filters = " + applied_filters.get(FilterPreferenceData.LANGUAGE).toString());
     }
 
     private void refreshFilters() {
@@ -85,118 +74,86 @@ public class MyFabFragment extends AAH_FabulousFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        DebugLog.logD(TAG, "onDestory()");
     }
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-
         View contentView = View.inflate(getContext(), R.layout.filter_view, null);
 
-        RelativeLayout rl_content = (RelativeLayout) contentView.findViewById(R.id.rl_content);
-        vp_types = (ViewPager) contentView.findViewById(R.id.vp_types);
-        tabs_types = (TabLayout) contentView.findViewById(R.id.tabs_types);
+        RelativeLayout rl_content = contentView.findViewById(R.id.rl_content);
+        vp_types = contentView.findViewById(R.id.vp_types);
+        tabs_types = contentView.findViewById(R.id.tabs_types);
 
-        LinearLayout ll_buttons = (LinearLayout) contentView.findViewById(R.id.ll_buttons);
-        ImageButton imgbtn_edit = (ImageButton) contentView.findViewById(R.id.imgbtn_edit);
-        ImageButton imgbtn_apply = (ImageButton) contentView.findViewById(R.id.imgbtn_apply);
+        LinearLayout ll_buttons = contentView.findViewById(R.id.ll_buttons);
+        ImageButton imgbtn_edit = contentView.findViewById(R.id.imgbtn_edit);
+        ImageButton imgbtn_apply = contentView.findViewById(R.id.imgbtn_apply);
 
         // Apply 버튼 Click Listener
-        imgbtn_apply.setOnClickListener(new View.OnClickListener() {
+        imgbtn_apply.setOnClickListener(v -> {
+            // Apply 조건 체크
+            if (checkApplyCondition()) {
+                closeFilter(applied_filters);
 
-            @Override
-            public void onClick(View v) {
-
-                // Apply 조건 체크
-                if (checkApplyCondition()) {
-
-                    closeFilter(applied_filters);
-
-                    // preference 저장
-                    setStringArrayPref(getContext(), FilterPreferenceData.LANGUAGE, applied_filters.get(FilterPreferenceData.LANGUAGE));
-                    setStringArrayPref(getContext(), FilterPreferenceData.CREATED, applied_filters.get(FilterPreferenceData.CREATED));
-                }
+                // preference 저장
+                setStringArrayPref(getContext(), FilterPreferenceData.LANGUAGE, applied_filters.get(FilterPreferenceData.LANGUAGE));
+                setStringArrayPref(getContext(), FilterPreferenceData.CREATED, applied_filters.get(FilterPreferenceData.CREATED));
             }
         });
 
         // Edit 버튼 Click Listener - Language Customize
-        imgbtn_edit.setOnClickListener(new View.OnClickListener() {
+        imgbtn_edit.setOnClickListener(v -> {
+            // Language Data
+            FilterData filterData = new FilterData();
 
-            @Override
-            public void onClick(View v) {
+            String[] items = new String[filterData.getLanguageListSize() - 1];
+            List<String> editableLanguageList = filterData.getLanguageList();
+            editableLanguageList.remove(0); // Remove "All", All은 Filter에서 제거되지 않도록 한다
+            items = editableLanguageList.toArray(items);
 
-                // Language Data
-                FilterData filterData = new FilterData();
+            final String[] finalItems = items;
 
-                String[] items = new String[filterData.getLanguageListSize() - 1];
-                List<String> editableLanguageList = filterData.getLanguageList();
-                editableLanguageList.remove(0); // Remove "All", All은 Filter에서 제거되지 않도록 한다
-                items = editableLanguageList.toArray(items);
+            // Already Checked Items
+            final boolean[] checkedItems = new boolean[filterData.getLanguageListSize() - 1];
 
-                final String[] finalItems = items;
+            for (String s : edited_filters) {
 
-                // Already Checked Items
-                final boolean[] checkedItems = new boolean[filterData.getLanguageListSize() - 1];
+                if (s.equals("All")) continue;
 
-                for (String s : edited_filters) {
-
-                    if (s.equals("All")) continue;
-
-                    checkedItems[filterData.getLanguageIndex(s)] = true;
-                }
-
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                dialog.setTitle(getString(R.string.dialog_title))
-                        .setMultiChoiceItems(items, checkedItems,
-                                new DialogInterface.OnMultiChoiceClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-
-                                        if (isChecked) {
-
-                                            edited_filters.add(finalItems[which]);
-                                        } else {
-
-                                            // edited_filter 제거
-                                            edited_filters.remove(finalItems[which]);
-
-                                            // applied_filter에도 해당되면 제거
-                                            removeFromSelectedMap(FilterPreferenceData.LANGUAGE, finalItems[which]);
-                                        }
-                                    }
-                                })
-                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                refreshFilters();
-                            }
-                        })
-                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                // Preference 저장
-                                FilterPreferenceData.setStringArrayPref(getContext(), FilterPreferenceData.EDITED, edited_filters);
-                                FilterPreferenceData.setStringArrayPref(getContext(), FilterPreferenceData.LANGUAGE, applied_filters.get(FilterPreferenceData.LANGUAGE));
-
-                                // applied_filter가 0이면 -> "All" Setting
-                                if (applied_filters.get(FilterPreferenceData.LANGUAGE) == null || applied_filters.get(FilterPreferenceData.LANGUAGE).size() == 0) {
-
-                                    addToSelectedMap(FilterPreferenceData.LANGUAGE, "All");
-                                }
-
-                                FilterPreferenceData.editedFlag = true;
-
-                                closeFilter(applied_filters);
-                            }
-                        }).create().show();
-
+                checkedItems[filterData.getLanguageIndex(s)] = true;
             }
+
+            AlertDialog.Builder dialog1 = new AlertDialog.Builder(getContext());
+            dialog1.setTitle(getString(R.string.dialog_title))
+                    .setMultiChoiceItems(items, checkedItems,
+                            (dialog11, which, isChecked) -> {
+                                if (isChecked) {
+                                    edited_filters.add(finalItems[which]);
+                                } else {
+                                    // edited_filter 제거
+                                    edited_filters.remove(finalItems[which]);
+
+                                    // applied_filter에도 해당되면 제거
+                                    removeFromSelectedMap(FilterPreferenceData.LANGUAGE, finalItems[which]);
+                                }
+                            })
+                    .setNegativeButton(getString(R.string.cancel), (dialog112, which) -> refreshFilters())
+                    .setPositiveButton(getString(R.string.ok), (dialog113, which) -> {
+
+                        // Preference 저장
+                        FilterPreferenceData.setStringArrayPref(getContext(), FilterPreferenceData.EDITED, edited_filters);
+                        FilterPreferenceData.setStringArrayPref(getContext(), FilterPreferenceData.LANGUAGE, applied_filters.get(FilterPreferenceData.LANGUAGE));
+
+                        // applied_filter가 0이면 -> "All" Setting
+                        if (applied_filters.get(FilterPreferenceData.LANGUAGE) == null || applied_filters.get(FilterPreferenceData.LANGUAGE).size() == 0) {
+
+                            addToSelectedMap(FilterPreferenceData.LANGUAGE, "All");
+                        }
+
+                        FilterPreferenceData.editedFlag = true;
+
+                        closeFilter(applied_filters);
+                    }).create().show();
+
         });
 
         mAdapter = new SectionsPagerAdapter();
@@ -226,7 +183,7 @@ public class MyFabFragment extends AAH_FabulousFragment {
 
             LayoutInflater inflater = LayoutInflater.from(getContext());
             ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.view_filters_sorters, collection, false);
-            FlexboxLayout fbl = (FlexboxLayout) layout.findViewById(R.id.fbl);
+            FlexboxLayout fbl = layout.findViewById(R.id.fbl);
 
             switch (position) {
 
@@ -257,15 +214,11 @@ public class MyFabFragment extends AAH_FabulousFragment {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-
                 case 0:
                     return FilterPreferenceData.LANGUAGE;
-
                 case 1:
                     return FilterPreferenceData.CREATED;
-
             }
-
             return "";
         }
 
@@ -277,80 +230,68 @@ public class MyFabFragment extends AAH_FabulousFragment {
     }
 
     private void inflateLayoutWithFilters(final String filter_category, FlexboxLayout fbl) {
-
         List<String> keys = new ArrayList<>();
-
         switch (filter_category) {
-
             case FilterPreferenceData.LANGUAGE:
-
                 // keys = ((RepositoryListActivity) getActivity()).filterData.getLanguageList();
                 keys = edited_filters;
                 break;
 
             case FilterPreferenceData.CREATED:
-
                 keys = ((RepositoryListActivity) getActivity()).filterData.getCreatedList();
                 break;
 
         }
 
         for (int i = 0; i < keys.size(); i++) {
-
             View subchild = getActivity().getLayoutInflater().inflate(R.layout.single_chip, null);
-
             final TextView tv = ((TextView) subchild.findViewById(R.id.txt_title));
-
             tv.setText(keys.get(i));
 
             final int finalI = i;
             final List<String> finalKeys = keys;
 
-            tv.setOnClickListener(new View.OnClickListener() {
+            tv.setOnClickListener(v -> {
 
-                @Override
-                public void onClick(View v) {
+                // 선택하여 비활성화 하는 경우
+                if (tv.getTag() != null && tv.getTag().equals(SELECTED)) {
 
-                    // 선택하여 비활성화 하는 경우
-                    if (tv.getTag() != null && tv.getTag().equals(SELECTED)) {
+                    tv.setTag(UNSELECTED);
+                    tv.setBackgroundResource(R.drawable.shape_chip_unselected);
+                    tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
 
-                        tv.setTag(UNSELECTED);
-                        tv.setBackgroundResource(R.drawable.shape_chip_unselected);
-                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+                    removeFromSelectedMap(filter_category, finalKeys.get(finalI));
+                }
+                // 선택하여 활성화 하는 경우
+                else {
 
-                        removeFromSelectedMap(filter_category, finalKeys.get(finalI));
+                    // Created의 임의의 항목을 선택하는 경우
+                    if (filter_category.equals(FilterPreferenceData.CREATED)) {
+
+                        clearPeriodSelected();
                     }
-                    // 선택하여 활성화 하는 경우
-                    else {
 
-                        // Created의 임의의 항목을 선택하는 경우
-                        if (filter_category.equals(FilterPreferenceData.CREATED)) {
+                    // Language의 임의의 항목을 선택하는 경우
+                    if (filter_category.equals(FilterPreferenceData.LANGUAGE)) {
 
-                            clearPeriodSelected();
+                        if (finalKeys.get(finalI).equals("All")) {
+
+                            clearLanguageSelected();
+                        } else {
+
+                            languageTVs.get(0).setTag(UNSELECTED);
+                            languageTVs.get(0).setBackgroundResource(R.drawable.shape_chip_unselected);
+                            languageTVs.get(0).setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+
+                            removeFromSelectedMap(filter_category, "All");
                         }
-
-                        // Language의 임의의 항목을 선택하는 경우
-                        if (filter_category.equals(FilterPreferenceData.LANGUAGE)) {
-
-                            if (finalKeys.get(finalI).equals("All")) {
-
-                                clearLanguageSelected();
-                            } else {
-
-                                languageTVs.get(0).setTag(UNSELECTED);
-                                languageTVs.get(0).setBackgroundResource(R.drawable.shape_chip_unselected);
-                                languageTVs.get(0).setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
-
-                                removeFromSelectedMap(filter_category, "All");
-                            }
-                        }
-
-                        tv.setTag(SELECTED);
-                        tv.setBackgroundResource(R.drawable.shape_chip_selected);
-                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_header));
-
-                        addToSelectedMap(filter_category, finalKeys.get(finalI));
                     }
+
+                    tv.setTag(SELECTED);
+                    tv.setBackgroundResource(R.drawable.shape_chip_selected);
+                    tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_header));
+
+                    addToSelectedMap(filter_category, finalKeys.get(finalI));
                 }
             });
 
@@ -379,42 +320,31 @@ public class MyFabFragment extends AAH_FabulousFragment {
     }
 
     private void clearPeriodSelected() {
-
         for (TextView tv : periodTVs) {
-
             tv.setTag(UNSELECTED);
             tv.setBackgroundResource(R.drawable.shape_chip_unselected);
             tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
         }
-
         if (applied_filters.get(FilterPreferenceData.CREATED) != null) {
-
             applied_filters.get(FilterPreferenceData.CREATED).clear();
         }
     }
 
     private void clearLanguageSelected() {
-
         for (TextView tv : languageTVs) {
-
             tv.setTag(UNSELECTED);
             tv.setBackgroundResource(R.drawable.shape_chip_unselected);
             tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
         }
-
         if (applied_filters.get(FilterPreferenceData.LANGUAGE) != null) {
-
             applied_filters.get(FilterPreferenceData.LANGUAGE).clear();
         }
     }
 
     private void addToSelectedMap(String key, String value) {
-
         if (applied_filters.get(key) != null && !applied_filters.get(key).contains(value)) {
-
             applied_filters.get(key).add(value);
         } else {
-
             ArrayList<String> temp = new ArrayList<>();
             temp.add(value);
             applied_filters.put(key, temp);
@@ -422,42 +352,31 @@ public class MyFabFragment extends AAH_FabulousFragment {
     }
 
     private void removeFromSelectedMap(String key, String value) {
-
         if (applied_filters.get(key) != null) {
-
             if (applied_filters.get(key).size() == 1 && applied_filters.get(key).contains(value)) {
-
                 applied_filters.remove(key);
             } else {
-
                 applied_filters.get(key).remove(value);
             }
         }
     }
 
     private boolean checkApplyCondition() {
-
         boolean ret = true;
-
         if (applied_filters.get(FilterPreferenceData.LANGUAGE) == null) {
-
             Toast.makeText(getContext(), getString(filter_error_null_lang), Toast.LENGTH_SHORT).show();
             ret = false;
         } else {
-
             if (applied_filters.get(FilterPreferenceData.LANGUAGE).size() > 3) {
-
                 Toast.makeText(getContext(), getString(R.string.filter_error_exceed), Toast.LENGTH_SHORT).show();
                 ret = false;
             }
         }
-
         if (applied_filters.get(FilterPreferenceData.CREATED) == null) {
 
             Toast.makeText(getContext(), getString(R.string.filter_error_null_created), Toast.LENGTH_SHORT).show();
             ret = false;
         }
-
         return ret;
     }
 }

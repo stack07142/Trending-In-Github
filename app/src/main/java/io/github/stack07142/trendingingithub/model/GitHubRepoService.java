@@ -30,7 +30,7 @@ public interface GitHubRepoService {
      *
      * @see GitHubRepoService#listRepos(String)
      */
-    public static class Repositories {
+    class Repositories {
 
         public final List<RepositoryItem> items;
 
@@ -58,7 +58,7 @@ public interface GitHubRepoService {
      *
      * @see GitHubRepoService#detailRepo(String, String)
      */
-    public static class RepositoryItem {
+    class RepositoryItem {
 
         public final String description;
         public final Owner owner;
@@ -87,7 +87,7 @@ public interface GitHubRepoService {
      *
      * @see GitHubRepoService#detailRepo(String, String)
      */
-    public static class Owner {
+    class Owner {
         public final String received_events_url;
         public final String organizations_url;
         public final String avatar_url;
@@ -140,7 +140,7 @@ public interface GitHubRepoService {
     @GET("repos/{repoOwner}/{repoName}/readme")
     Observable<ReadMe> detailRepoReadMe(@Path(value = "repoOwner") String owner, @Path(value = "repoName") String repoName);
 
-    public static class ReadMe {
+    class ReadMe {
 
         public final String html_url;
         public final String download_url;
