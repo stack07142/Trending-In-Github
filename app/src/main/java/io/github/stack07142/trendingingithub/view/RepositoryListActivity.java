@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.google.android.gms.ads.MobileAds;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
@@ -64,6 +65,9 @@ public class RepositoryListActivity extends BaseActivityUtil
         mBinding.toolbarLayout.setExpandedTitleTypeface(tf);
 
         setupViews();
+
+        // Admob
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
 
         // GitHubRepoService 인스턴스 생성
         final GitHubRepoService gitHubRepoService = ((NewGitHubRepoApplication) getApplication()).getGitHubRepoService();
